@@ -1,0 +1,54 @@
+{
+  "home": {
+    "title": "Welcome to DiveDrop",
+    "subtitle": "Discover the underwater world. Explore dive sites, track your dives, and connect with fellow divers.",
+    "register": "Get Started",
+    "login": "Sign In",
+    "features": {
+      "explore": "Explore",
+      "discover": "Discover",
+      "adventure": "Adventure"
+    }
+  },
+  "auth": {
+    "register_title": "Create Account",
+    "register_subtitle": "Join the diving community",
+    "login_title": "Sign In",
+    "login_subtitle": "Welcome back!",
+    "email": "Email Address",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "password_hint": "Minimum 8 characters, 1 uppercase, 1 lowercase, 1 number",
+    "register_button": "Create Account",
+    "login_button": "Sign In",
+    "have_account": "Already have an account?",
+    "no_account": "Don't have an account?",
+    "login_link": "Sign In",
+    "register_link": "Create one",
+    "forgot_password": "Forgot password?",
+    "registration_success": "Registration successful! Please verify your email.",
+    "password_mismatch": "Passwords do not match"
+  },
+  "navigation": {
+    "home": "Home",
+    "explore": "Explore",
+    "my_dives": "My Dives",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit"
+  }
+}

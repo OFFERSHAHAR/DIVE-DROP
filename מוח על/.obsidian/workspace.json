@@ -1,0 +1,233 @@
+{
+  "main": {
+    "id": "33997e2677f60a0c",
+    "type": "split",
+    "children": [
+      {
+        "id": "db4fd17b8a044d7e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ebd539e378b57ed3",
+            "type": "leaf",
+            "state": {
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "תצוגת גרף"
+            }
+          }
+        ],
+        "stacked": true
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "27e72488bb623fe6",
+    "type": "split",
+    "children": [
+      {
+        "id": "d7e042f39682bf88",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "d5c4dec83ae6ffe7",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "סייר קבצים"
+            }
+          },
+          {
+            "id": "850dc50724165a62",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "tag:#comfyui",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "לחפש"
+            }
+          },
+          {
+            "id": "967e73859ff0b382",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "סימניות"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "right": {
+    "id": "2163b7d36aef32bc",
+    "type": "split",
+    "children": [
+      {
+        "id": "89d8503013f574f0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "76d3314c1b21db6e",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "קישורים נכנסים"
+            }
+          },
+          {
+            "id": "64d7f09f18b20771",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "קישורים יוצאים"
+            }
+          },
+          {
+            "id": "1514df4b01f1bf1f",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "תגים"
+            }
+          },
+          {
+            "id": "7b9573a36b6a805f",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "כל המאפיינים"
+            }
+          },
+          {
+            "id": "7681dc2ec317ddd0",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "מתווה"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:פתח את המחליף המהיר": false,
+      "graph:פתח תצוגת גרף": false,
+      "canvas:צור קנבס חדש": false,
+      "daily-notes:פתח את ההערה של היום": false,
+      "templates:הכנס תבנית": false,
+      "command-palette:פתח את לוח הפקודות": false,
+      "bases:צור בסיס חדש": false
+    }
+  },
+  "active": "ebd539e378b57ed3",
+  "lastOpenFiles": [
+    "📥 קלט/agent_v6/bot_app/assets/photo_2026-05-31_15-32-58.jpg",
+    "ללא כותרת 1.canvas",
+    "📥 קלט/agent_v6/THE ORCASTRATOR FRONT/photo_2026-05-31_15-32-33.jpg",
+    "📚 ידע/קטלוג-AI-במחשב.md",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/008.jpg",
+    "📥 קלט/agent_v6/bot_app/assets/orcastrator_workspace.jpg",
+    "📥 קלט/agent_v6/bot_app/assets/photo_2026-05-31_16-55-23.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/20.jpg",
+    "_מפתח.md",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/NEJE/V20.exe",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/specification.txt",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/81.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/test.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/47.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/43.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px/46.jpg",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/CarverDriver.exe",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/NEJE V3.6.exe",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/pic sample 490x490px",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/NEJE",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/How to install the software in windows.docx",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/Microsoft.NET.exe",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/Driver.exe",
+    "📥 קלט/(.net, drive, sortware V3.6 KZ FKZ BL)/DK-8-KZ Manual.pdf",
+    "2026-06-16.md",
+    "🤖 סוכן-Claude-Terminal/AGENT-PROMPT.md",
+    "🤖 סוכן-Claude-Terminal/New-Tools-Updates.md",
+    "🤖 סוכן-Claude-Terminal/Pro-Tips-Tricks.md",
+    "🤖 סוכן-Claude-Terminal/OLLAMA-Advanced-Setup.md",
+    "🤖 סוכן-Claude-Terminal/Claude-Code-Terminal-Guide.md",
+    "🤖 סוכן-Claude-Terminal/_אינדקס.md",
+    "📥 קלט/⚡ ENABLE-CSS-DRAMATIC.md",
+    "📥 קלט/🎨 הנחיות עיצוב Obsidian.md",
+    "🔗 מקורות חיצוניים/עמוס ספטמבר 23.md",
+    "ברוך הבא.md",
+    "🔗 מקורות חיצוניים/מפת-קשרים.md",
+    "🔗 מקורות חיצוניים/_אינדקס-מקורות.md",
+    "🔗 מקורות חיצוניים/מוצרים -פרוייקטים - וסוכנים.md",
+    "🔗 מקורות חיצוניים/קלוד תיקית אובסידיאן.md",
+    "🔗 מקורות חיצוניים/מיכאל אוקטובר 2023 אילת.md",
+    "🔗 מקורות חיצוניים/ניב 2024 מרץ.md",
+    "✅ משימות/✅ משימות.md",
+    "ללא כותרת.canvas",
+    "📚 ידע/מוצרים-מוכנים-תהליך.md",
+    "📚 ידע/לימודים-וקורסים.md",
+    "📚 ידע/📚 ידע.md",
+    "📤 פלט/📤 פלט.md",
+    "צור קישור.md"
+  ]
+}
