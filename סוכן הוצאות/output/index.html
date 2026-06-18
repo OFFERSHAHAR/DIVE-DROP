@@ -1,430 +1,310 @@
 <!DOCTYPE html>
 <html dir="rtl" lang="he">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>דוח ניתוח חשבון בנק</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Arial', 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 20px;
-            min-height: 100vh;
-        }
-        
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        .header {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        
-        .header h1 {
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 2.5em;
-        }
-        
-        .header p {
-            color: #666;
-            font-size: 1.1em;
-        }
-        
-        .summary-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            border-right: 5px solid;
-        }
-        
-        .card.income {
-            border-right-color: #2ecc71;
-        }
-        
-        .card.expenses {
-            border-right-color: #e74c3c;
-        }
-        
-        .card.transactions {
-            border-right-color: #3498db;
-        }
-        
-        .card.balance {
-            border-right-color: #f39c12;
-        }
-        
-        .card-title {
-            font-size: 0.9em;
-            color: #666;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        
-        .card-value {
-            font-size: 2em;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .currency {
-            font-size: 0.7em;
-            margin-left: 5px;
-            color: #999;
-        }
-        
-        .charts-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        
-        .chart-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            position: relative;
-        }
-        
-        .chart-title {
-            font-size: 1.3em;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-        }
-        
-        .table-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            overflow-x: auto;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95em;
-        }
-        
-        th {
-            background: #f8f9fa;
-            padding: 12px;
-            text-align: right;
-            border-bottom: 2px solid #dee2e6;
-            font-weight: bold;
-            color: #333;
-        }
-        
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #dee2e6;
-            color: #666;
-        }
-        
-        tr:hover {
-            background: #f8f9fa;
-        }
-        
-        .category-name {
-            font-weight: bold;
-            color: #333;
-        }
-        
-        .amount {
-            text-align: left;
-            font-weight: bold;
-            color: #2c3e50;
-        }
-        
-        .footer {
-            text-align: center;
-            color: white;
-            padding: 20px;
-            margin-top: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .charts-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .header h1 {
-                font-size: 1.8em;
-            }
-            
-            .summary-cards {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>&#127982; יוני הבנקאי שלי — חשבון 12-644-317398</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #e2e8f0; direction: rtl; }
+.container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+.header { background: linear-gradient(135deg, #1e3a5f 0%, #1e293b 100%); padding: 30px 20px; border-bottom: 1px solid #334155; margin-bottom: 20px; }
+.header h1 { font-size: 2rem; color: #60a5fa; }
+.header .sub { color: #94a3b8; margin-top: 5px; font-size: 0.9rem; }
+.kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+.kpi-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; cursor: pointer; transition: all .2s; }
+.kpi-card:hover { border-color: #3b82f6; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(59,130,246,.2); }
+.kpi-label { font-size: 0.8rem; color: #94a3b8; margin-bottom: 8px; }
+.kpi-value { font-size: 1.6rem; font-weight: 700; }
+.kpi-sub { font-size: 0.75rem; color: #64748b; margin-top: 4px; }
+.green { color: #22c55e; } .red { color: #ef4444; } .blue { color: #60a5fa; } .yellow { color: #f59e0b; }
+.panel { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-bottom: 20px; display: none; }
+.panel.active { display: block; animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+.section-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 15px; color: #60a5fa; border-bottom: 1px solid #334155; padding-bottom: 10px; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #0f172a; color: #94a3b8; padding: 10px 12px; text-align: right; font-size: 0.8rem; border-bottom: 1px solid #334155; }
+td { padding: 10px 12px; border-bottom: 1px solid #1e3a5f; font-size: 0.85rem; }
+tr:hover td { background: #162032; }
+.badge { display: inline-block; padding: 3px 8px; border-radius: 20px; font-size: 0.72rem; font-weight: 600; color: white; }
+.chart-wrap { background: #0f172a; border-radius: 10px; padding: 15px; margin-bottom: 20px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+@media(max-width:768px) { .grid2{grid-template-columns:1fr;} .kpi-grid{grid-template-columns:repeat(2,1fr);} }
+.cat-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+.cat-btn { background: #1e293b; border: 1px solid #334155; border-radius: 20px; padding: 7px 16px; cursor: pointer; font-size: 0.8rem; color: #e2e8f0; transition: all .2s; }
+.cat-btn:hover, .cat-btn.active { background: #2563eb; border-color: #3b82f6; color: white; }
+.month-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 15px; margin-bottom: 25px; }
+.month-card { background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; transition: all .2s; }
+.month-card:hover { border-color: #3b82f6; transform: translateY(-2px); }
+.month-card h3 { font-size: 1.1rem; margin-bottom: 12px; color: #60a5fa; }
+.month-stat { display: flex; justify-content: space-between; margin-bottom: 6px; font-size: 0.85rem; }
+.month-btn { display: block; text-align: center; background: #2563eb; color: white; border-radius: 8px; padding: 8px; margin-top: 12px; text-decoration: none; font-size: 0.82rem; transition: background .2s; }
+.month-btn:hover { background: #1d4ed8; }
+.flag-item { background: #2d1515; border: 1px solid #7f1d1d; border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+.flag-item .flag-title { color: #f87171; font-weight: 700; margin-bottom: 5px; }
+.flag-item .flag-desc { font-size: 0.85rem; color: #fca5a5; }
+.tabs { display: flex; gap: 5px; margin-bottom: 20px; flex-wrap: wrap; }
+.tab-btn { background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 8px 16px; cursor: pointer; font-size: 0.85rem; color: #94a3b8; transition: all .2s; }
+.tab-btn.active, .tab-btn:hover { background: #1d4ed8; color: white; border-color: #3b82f6; }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.summary-box { background: #0f172a; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+.summary-box .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #1e293b; font-size: 0.88rem; }
+.summary-box .row:last-child { border: none; font-weight: 700; }
+.nav-bar { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+.nav-btn { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:8px 16px; color:#60a5fa; text-decoration:none; font-size:0.85rem; transition:all .2s; }
+.nav-btn:hover { background:#2563eb; color:white; }
+.back-btn { background:#374151; border:1px solid #4b5563; border-radius:8px; padding:8px 16px; color:#e2e8f0; text-decoration:none; font-size:0.85rem; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>דוח ניתוח חשבון בנק</h1><p>תאריך הדוח: 18.06.2026</p><p>טווח נתונים: 19.05.2026 עד 17.06.2026</p>        </div>
-        
-        <div class="summary-cards">
-            <div class="card income">
-                <div class="card-title">סה"כ הכנסות</div>
-                <div class="card-value">25579.00<span class="currency">₪</span></div>
-            </div>
-            
-            <div class="card expenses">
-                <div class="card-title">סה"כ הוצאות</div>
-                <div class="card-value">25660.28<span class="currency">₪</span></div>
-            </div>
-            
-            <div class="card transactions">
-                <div class="card-title">מספר תנועות</div>
-                <div class="card-value">42</div>
-            </div>
-            
-            <div class="card balance">
-                <div class="card-title">יתרה נקיה</div>
-                <div class="card-value">-81.28<span class="currency">₪</span></div>
-            </div>
-        </div>
-        
-        <div class="charts-grid">
-            <div class="chart-container">
-                <div class="chart-title">חלוקה הוצאות לפי קטגוריה</div>
-                <canvas id="categoryChart"></canvas>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">מספר תנועות לפי קטגוריה</div>
-                <canvas id="countChart"></canvas>
-            </div>
-            
-            <div class="chart-container" style="grid-column: 1 / -1;">
-                <div class="chart-title">סכום תנועות יומי</div>
-                <canvas id="dailyChart"></canvas>
-            </div>
-            
-            <div class="chart-container">
-                <div class="chart-title">הכנסות vs הוצאות</div>
-                <canvas id="incomeExpenseChart"></canvas>
-            </div>
-        </div>
-        
-        <div class="table-container">
-            <div class="chart-title">פירוט קטגוריות</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>קטגוריה</th>
-                        <th>מספר תנועות</th>
-                        <th>סה"כ סכום (₪)</th>
-                        <th>אחוז מסך הכול</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="category-name">דיור</td>
-                        <td>1</td>
-                        <td class="amount">3350.00</td>
-                        <td>6.5%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">הוראות קבע</td>
-                        <td>1</td>
-                        <td class="amount">95.76</td>
-                        <td>0.2%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">הכנסות אחרות</td>
-                        <td>1</td>
-                        <td class="amount">770.00</td>
-                        <td>1.5%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">הכנסות קבועות</td>
-                        <td>3</td>
-                        <td class="amount">14458.00</td>
-                        <td>28.2%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">משיכות מזומן</td>
-                        <td>3</td>
-                        <td class="amount">1840.00</td>
-                        <td>3.6%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">עמלות בנק</td>
-                        <td>8</td>
-                        <td class="amount">651.40</td>
-                        <td>1.3%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">צ'קים</td>
-                        <td>3</td>
-                        <td class="amount">8154.00</td>
-                        <td>15.9%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">שונות</td>
-                        <td>21</td>
-                        <td class="amount">21880.22</td>
-                        <td>42.7%</td>
-                    </tr>
-                    <tr>
-                        <td class="category-name">תקשורת</td>
-                        <td>1</td>
-                        <td class="amount">39.90</td>
-                        <td>0.1%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        
-        <div class="footer">
-            <p>דוח זה נוצר אוטומטית בהתבסס על נתוני חשבון הבנק</p>
-        </div>
-    </div>
-    
-    <script>
-        const categoryLabels = ["דיור", "הוראות קבע", "הכנסות אחרות", "הכנסות קבועות", "משיכות מזומן", "עמלות בנק", "צ'קים", "שונות", "תקשורת"];
-        const categoryAmounts = [3350.0, 95.76, 770.0, 14458.0, 1840.0, 651.4, 8154.0, 21880.22, 39.9];
-        const categoryCounts = [1, 1, 1, 3, 3, 8, 3, 21, 1];
-        const categoryColors = ["#FF6B6B", "#4ECDC4", "#45B7D1", "#FFA07A", "#98D8C8", "#F7DC6F", "#BB8FCE", "#85C1E2", "#F8B88B"];
-        const dailyDates = ["2026-05-19", "2026-05-21", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-05-31", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17"];
-        const dailyAmounts = [38.5, 31.0, 18701.0, 167.7, 810.2, 516.29, 916.44, 1866.23, 655.63, 7128.0, 3572.0, 3881.7, 778.73, 4332.1, 2326.37, 827.11, 1814.92, 155.07, 152.98, 121.55, 15.2, 200.0, 2230.56];
-        const incomeAmount = 25579.0;
-        const expenseAmount = 25660.280000000002;
-        
-        const ctxCategory = document.getElementById('categoryChart').getContext('2d');
-        new Chart(ctxCategory, {
-            type: 'doughnut',
-            data: {
-                labels: categoryLabels,
-                datasets: [{
-                    data: categoryAmounts,
-                    backgroundColor: categoryColors,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        position: 'right',
-                        labels: {
-                            font: { size: 11 },
-                            padding: 15
-                        }
-                    }
-                }
-            }
-        });
-        
-        const ctxCount = document.getElementById('countChart').getContext('2d');
-        new Chart(ctxCount, {
-            type: 'bar',
-            data: {
-                labels: categoryLabels,
-                datasets: [{
-                    label: 'מספר תנועות',
-                    data: categoryCounts,
-                    backgroundColor: categoryColors,
-                    borderRadius: 5,
-                    borderSkipped: false
-                }]
-            },
-            options: {
-                indexAxis: 'y',
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    x: {
-                        ticks: { callback: function(value) { return value.toLocaleString('he-IL'); } }
-                    }
-                }
-            }
-        });
-        
-        const ctxDaily = document.getElementById('dailyChart').getContext('2d');
-        new Chart(ctxDaily, {
-            type: 'line',
-            data: {
-                labels: dailyDates,
-                datasets: [{
-                    label: 'סה"כ תנועות יומי',
-                    data: dailyAmounts,
-                    borderColor: '#667eea',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#667eea',
-                    pointBorderColor: '#fff',
-                    pointBorderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { position: 'top' }
-                },
-                scales: {
-                    y: {
-                        ticks: { callback: function(value) { return value.toLocaleString('he-IL') + ' ₪'; } }
-                    }
-                }
-            }
-        });
-        
-        const ctxIncomeExpense = document.getElementById('incomeExpenseChart').getContext('2d');
-        new Chart(ctxIncomeExpense, {
-            type: 'bar',
-            data: {
-                labels: ['הכנסות', 'הוצאות'],
-                datasets: [{
-                    label: 'סה"כ',
-                    data: [incomeAmount, expenseAmount],
-                    backgroundColor: ['#2ecc71', '#e74c3c'],
-                    borderRadius: 5
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: { display: false }
-                },
-                scales: {
-                    y: {
-                        ticks: { callback: function(value) { return value.toLocaleString('he-IL') + ' ₪'; } }
-                    }
-                }
-            }
-        });
-    </script>
+<div class="header">
+  <div class="container">
+    <h1>&#127982; יוני הבנקאי שלי</h1>
+    <div class="sub">חשבון 12-644-317398 | תאריך הפקה: 18.06.2026 | תקופה: מאי–יוני 2026</div>
+  </div>
+</div>
+<div class="container">
+
+<div class="kpi-grid">
+  <div class="kpi-card" onclick="togglePanel('panel-income')">
+    <div class="kpi-label">&#x1F4B0; סה"כ הכנסות</div>
+    <div class="kpi-value green">&#x20AA;25,579.00</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-expense')">
+    <div class="kpi-label">&#x1F4B8; סה"כ הוצאות</div>
+    <div class="kpi-value red">&#x20AA;25,660.28</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-net')">
+    <div class="kpi-label">&#128202; יתרה נטו</div>
+    <div class="kpi-value red">&#x20AA;-81.28</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-fees')">
+    <div class="kpi-label">&#127982; סה"כ עמלות</div>
+    <div class="kpi-value yellow">&#x20AA;22.00</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-standing')">
+    <div class="kpi-label">&#128260; הוראות קבע</div>
+    <div class="kpi-value blue">&#x20AA;189.96</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-checks')">
+    <div class="kpi-label">&#128221; צ'קים</div>
+    <div class="kpi-value" style="color:#a78bfa">2 צ'קים</div>
+    <div class="kpi-sub">כולל 1 שחזר &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-credit')">
+    <div class="kpi-label">&#x1F4B3; כרטיס אשראי</div>
+    <div class="kpi-value blue">&#x20AA;10,447.42</div>
+    <div class="kpi-sub">חיובי דירקט &#9660;</div>
+  </div>
+  <div class="kpi-card" onclick="togglePanel('panel-flags')" style="border-color:#7f1d1d">
+    <div class="kpi-label">&#9888;&#65039; דגלים אדומים</div>
+    <div class="kpi-value red">3 ממצאים</div>
+    <div class="kpi-sub">לחץ לפירוט &#9660;</div>
+  </div>
+</div>
+
+<div class="panel" id="panel-income">
+  <div class="section-title">&#x1F4B0; פירוט הכנסות לפי מקור</div>
+  <table><tr><th>תאריך</th><th>סוג</th><th>מקור</th><th>סכום</th><th>קטגוריה</th></tr><tr><td>25/05/2026</td><td>ביטוח לאומי ג"</td><td>שחר עופר            מזהה 039076914</td><td class="green">+&#x20AA;4,711.00</td><td>ביטוח לאומי</td></tr><tr><td>25/05/2026</td><td>bit העברת כסף</td><td>עופר שחר</td><td class="green">+&#x20AA;50.00</td><td>העברה נכנסת</td></tr><tr><td>25/05/2026</td><td>העברה-נייד</td><td>שליט אלדד</td><td class="green">+&#x20AA;7,000.00</td><td>העברה נכנסת</td></tr><tr><td>02/06/2026</td><td>משרד הבינוי וה</td><td>עופר שחר            מזהה 039076914</td><td class="green">+&#x20AA;770.00</td><td>קצבה/מענק ממשלתי</td></tr><tr><td>02/06/2026</td><td>העברה/הפקדה</td><td>שליט אלדד</td><td class="green">+&#x20AA;6,358.00</td><td>משכורת</td></tr><tr><td>08/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;1,020.00</td><td>הפקדת מזומן</td></tr><tr><td>09/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;420.00</td><td>הפקדת מזומן</td></tr><tr><td>10/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;400.00</td><td>הפקדת מזומן</td></tr><tr><td>16/06/2026</td><td>bit העברת כסף</td><td>עופר שחר</td><td class="green">+&#x20AA;200.00</td><td>העברה נכנסת</td></tr><tr><td>17/06/2026</td><td>העברה (תאריך ערך: 18/06)</td><td>—</td><td class="green">+&#x20AA;1,100.00</td><td>העברה נכנסת</td></tr></table>
+</div>
+
+<div class="panel" id="panel-expense">
+  <div class="section-title">&#x1F4B8; פירוט הוצאות לפי קטגוריה</div>
+  <div class="summary-box"><div class="row"><span>כרטיס אשראי</span><span class="red">&#x20AA;10,447.42</span></div><div class="row"><span>עיקול</span><span class="red">&#x20AA;6,940.00</span></div><div class="row"><span>צ'ק</span><span class="red">&#x20AA;4,604.00</span></div><div class="row"><span>העברה יוצאת</span><span class="red">&#x20AA;3,350.00</span></div><div class="row"><span>הוראת קבע</span><span class="red">&#x20AA;189.96</span></div><div class="row"><span>משיכת מזומן</span><span class="red">&#x20AA;106.90</span></div><div class="row"><span>עמלת בנק</span><span class="red">&#x20AA;22.00</span></div><div class="row"><span>סה"כ</span><span class="red">&#x20AA;25,660.28</span></div></div>
+</div>
+
+<div class="panel" id="panel-net">
+  <div class="section-title">&#128202; יתרה נטו חודשית</div>
+  <div class="chart-wrap"><canvas id="chart-net" height="80"></canvas></div>
+</div>
+
+<div class="panel" id="panel-fees">
+  <div class="section-title">&#127982; פירוט עמלות בנק</div>
+  <table><tr><th>תאריך</th><th>סוג</th><th>סכום</th></tr><tr><td>03/06/2026</td><td>ע. מסלול מורחב</td><td class="yellow">&#x20AA;22.00</td></tr><tr style="font-weight:700"><td colspan="2">סה"כ</td><td class="yellow">&#x20AA;22.00</td></tr></table>
+</div>
+
+<div class="panel" id="panel-standing">
+  <div class="section-title">&#128260; הוראות קבע</div>
+  <table><tr><th>תאריך</th><th>גוף</th><th>סכום</th><th>חודש</th></tr><tr><td>31/05/2026</td><td>עיריית אילת מס</td><td class="yellow">&#x20AA;54.30</td><td>מאי 2026</td></tr><tr><td>07/06/2026</td><td>בזק-הוראות קבע</td><td class="yellow">&#x20AA;95.76</td><td>יוני 2026</td></tr><tr><td>10/06/2026</td><td>הוט מובייל בע"</td><td class="yellow">&#x20AA;39.90</td><td>יוני 2026</td></tr><tr style="font-weight:700;color:#f59e0b"><td colspan="2">סה"כ</td><td>&#x20AA;189.96</td><td></td></tr></table>
+</div>
+
+<div class="panel" id="panel-checks">
+  <div class="section-title">&#128221; פירוט צ'קים</div>
+  <table><tr><th>מספר</th><th>תאריך</th><th>סכום</th><th>סטטוס</th><th>פרטים</th></tr><tr><td>10013</td><td>03/06/2026</td><td>&#x20AA;3,550.00</td><td style="color:#22c55e">&#9989; נפרע</td><td style="font-size:0.8rem"></td></tr><tr><td>10013</td><td>04/06/2026</td><td>&#x20AA;3,550.00</td><td style="color:#ef4444">&#10060; חזר</td><td style="font-size:0.8rem"> סיבת החזרה:  נ.ה.ב - נתקבלה הוראת ביטול</td></tr><tr><td>10025</td><td>10/06/2026</td><td>&#x20AA;1,054.00</td><td style="color:#22c55e">&#9989; נפרע</td><td style="font-size:0.8rem"></td></tr></table>
+</div>
+
+<div class="panel" id="panel-credit">
+  <div class="section-title">&#x1F4B3; חיובי כרטיס אשראי (דירקט)</div>
+  <table><tr><th>תאריך</th><th>פעולה</th><th>סכום</th><th>יתרה</th></tr><tr><td>19/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;38.50</td><td class="green">&#x20AA;89.52</td></tr><tr><td>21/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;31.00</td><td class="green">&#x20AA;58.52</td></tr><tr><td>26/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;60.80</td><td class="green">&#x20AA;4,818.72</td></tr><tr><td>27/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;810.20</td><td class="green">&#x20AA;3,901.62</td></tr><tr><td>28/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;516.29</td><td class="green">&#x20AA;3,385.33</td></tr><tr><td>29/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;916.44</td><td class="green">&#x20AA;2,468.89</td></tr><tr><td>31/05/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;1,811.93</td><td class="green">&#x20AA;656.96</td></tr><tr><td>01/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;655.63</td><td class="red">&#x20AA;-52.97</td></tr><tr><td>04/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;331.70</td><td class="green">&#x20AA;6,721.33</td></tr><tr><td>05/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;778.73</td><td class="green">&#x20AA;5,942.60</td></tr><tr><td>07/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;886.34</td><td class="green">&#x20AA;1,706.26</td></tr><tr><td>08/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;1,306.37</td><td class="green">&#x20AA;1,324.13</td></tr><tr><td>09/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;407.11</td><td class="green">&#x20AA;1,337.02</td></tr><tr><td>10/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;321.02</td><td class="green">&#x20AA;1,416.00</td></tr><tr><td>11/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;155.07</td><td class="green">&#x20AA;167.03</td></tr><tr><td>12/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;152.98</td><td class="green">&#x20AA;14.05</td></tr><tr><td>14/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;121.55</td><td class="red">&#x20AA;-107.50</td></tr><tr><td>15/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;15.20</td><td class="red">&#x20AA;-122.70</td></tr><tr><td>17/06/2026</td><td>דירקט- מצטבר</td><td class="red">&#x20AA;76.30</td><td class="green">&#x20AA;1.00</td></tr><tr><td>17/06/2026</td><td>דירקט</td><td class="red">&#x20AA;550.00</td><td class="green">&#x20AA;46.74</td></tr><tr><td>17/06/2026</td><td>דירקט</td><td class="red">&#x20AA;204.26</td><td class="green">&#x20AA;596.74</td></tr><tr><td>17/06/2026</td><td>דירקט</td><td class="red">&#x20AA;300.00</td><td class="green">&#x20AA;801.00</td></tr>
+  <tr style="font-weight:700"><td colspan="2">סה"כ</td><td class="red">&#x20AA;10,447.42</td><td></td></tr>
+  </table>
+</div>
+
+<div class="panel" id="panel-flags">
+  <div class="section-title">&#9888;&#65039; דגלים אדומים</div><div class="flag-item"><div class="flag-title">&#9888;&#65039; מימוש עיקול — 25/05/2026</div><div class="flag-desc">נגבה עיקול ע"ס 6,940 &#x20AA; ע"י המרכז לגביית קנסות ואגרות — תיק 00886180373. אירוע חמור המצריך טיפול מיידי!</div></div><div class="flag-item"><div class="flag-title">&#10060; צ'ק שחזר — 04/06/2026</div><div class="flag-desc">צ'ק מס' 10013 ע"ס 3,550 &#x20AA; חזר עם סיבה: נ.ה.ב — נתקבלה הוראת ביטול. הצ'ק הוצא ב-03/06 וחזר יום אחר כך.</div></div><div class="flag-item"><div class="flag-title">&#128308; יתרה שלילית — 14-15/06/2026</div><div class="flag-desc">יתרה שלילית מקסימלית של 122.70- &#x20AA; ביום 15/06. גם ב-01/06 נרשמה יתרה שלילית של 52.97- &#x20AA;.</div></div>
+</div>
+
+<div class="grid2">
+  <div class="chart-wrap">
+    <div style="color:#94a3b8;font-size:0.85rem;margin-bottom:10px">הכנסות vs הוצאות לפי חודש</div>
+    <canvas id="chart-monthly" height="120"></canvas>
+  </div>
+  <div class="chart-wrap">
+    <div style="color:#94a3b8;font-size:0.85rem;margin-bottom:10px">התפלגות הוצאות לפי קטגוריה</div>
+    <canvas id="chart-pie" height="120"></canvas>
+  </div>
+</div>
+
+<div class="chart-wrap">
+  <div style="color:#94a3b8;font-size:0.85rem;margin-bottom:10px">מגמת יתרה בחשבון לאורך הזמן</div>
+  <canvas id="chart-balance" height="80"></canvas>
+</div>
+
+<h2 style="margin-bottom:15px;color:#60a5fa">&#128197; דוחות חודשיים</h2>
+<div class="month-grid"><div class="month-card"><h3>&#128197; מאי 2026</h3><div class="month-stat"><span>הכנסות</span><span class="green">&#x20AA;11,761.00</span></div><div class="month-stat"><span>הוצאות</span><span class="red">&#x20AA;11,286.36</span></div><div class="month-stat"><span><b>יתרה נטו</b></span><span class="green"><b>+&#x20AA;474.64</b></span></div><div class="month-stat"><span>מספר עסקות</span><span class="blue">13</span></div><a href="חודשים/2026-05.html" class="month-btn">&#128202; פתח דוח מלא</a></div><div class="month-card"><h3>&#128197; יוני 2026</h3><div class="month-stat"><span>הכנסות</span><span class="green">&#x20AA;13,818.00</span></div><div class="month-stat"><span>הוצאות</span><span class="red">&#x20AA;14,373.92</span></div><div class="month-stat"><span><b>יתרה נטו</b></span><span class="red"><b>&#x20AA;-555.92</b></span></div><div class="month-stat"><span>מספר עסקות</span><span class="blue">29</span></div><a href="חודשים/2026-06.html" class="month-btn">&#128202; פתח דוח מלא</a></div></div>
+
+<h2 style="margin-bottom:15px;color:#60a5fa">&#128269; סינון לפי קטגוריה</h2>
+<div class="cat-buttons" id="cat-buttons">
+  <button class="cat-btn active" onclick="filterCat('הכל',this)">הכל</button>
+  <button class="cat-btn" onclick="filterCat('כרטיס אשראי',this)">&#x1F4B3; כרטיס אשראי</button>
+  <button class="cat-btn" onclick="filterCat('משכורת',this)">&#x1F4B0; משכורת</button>
+  <button class="cat-btn" onclick="filterCat('הוראת קבע',this)">&#128260; הוראות קבע</button>
+  <button class="cat-btn" onclick="filterCat('צ\'ק',this)">&#128221; צ'קים</button>
+  <button class="cat-btn" onclick="filterCat('העברה נכנסת',this)">&#11015;&#65039; העברות נכנסות</button>
+  <button class="cat-btn" onclick="filterCat('העברה יוצאת',this)">&#11014;&#65039; העברות יוצאות</button>
+  <button class="cat-btn" onclick="filterCat('עמלת בנק',this)">&#127982; עמלות</button>
+  <button class="cat-btn" onclick="filterCat('עיקול',this)">&#9888;&#65039; עיקול</button>
+</div>
+<div id="cat-panel" class="panel active">
+  <div class="section-title" id="cat-panel-title">כל העסקות</div>
+  <div id="cat-summary" class="summary-box"></div>
+  <table>
+    <tr><th>תאריך</th><th>פעולה</th><th>ממי/למי</th><th>קטגוריה</th><th>חובה</th><th>זכות</th><th>יתרה</th></tr>
+    <tbody id="cat-table-body"></tbody>
+  </table>
+</div>
+
+<h2 style="margin:25px 0 15px;color:#60a5fa">&#128203; ניתוח מפורט</h2>
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('tab-transfers',this)">העברות</button>
+  <button class="tab-btn" onclick="switchTab('tab-recs',this)">המלצות</button>
+</div>
+<div id="tab-transfers" class="tab-content active">
+  <h3 style="margin-bottom:15px;color:#22c55e">העברות נכנסות</h3>
+  <table><tr><th>תאריך</th><th>פעולה</th><th>מקור</th><th>סכום</th><th>סוג</th></tr><tr><td>25/05/2026</td><td>ביטוח לאומי ג"</td><td>שחר עופר            מזהה 039076914</td><td class="green">+&#x20AA;4,711.00</td><td>ביטוח לאומי</td></tr><tr><td>25/05/2026</td><td>bit העברת כסף</td><td>עופר שחר</td><td class="green">+&#x20AA;50.00</td><td>העברה נכנסת</td></tr><tr><td>25/05/2026</td><td>העברה-נייד</td><td>שליט אלדד</td><td class="green">+&#x20AA;7,000.00</td><td>העברה נכנסת</td></tr><tr><td>02/06/2026</td><td>משרד הבינוי וה</td><td>עופר שחר            מזהה 039076914</td><td class="green">+&#x20AA;770.00</td><td>קצבה/מענק ממשלתי</td></tr><tr><td>02/06/2026</td><td>העברה/הפקדה</td><td>שליט אלדד</td><td class="green">+&#x20AA;6,358.00</td><td>משכורת</td></tr><tr><td>08/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;1,020.00</td><td>הפקדת מזומן</td></tr><tr><td>09/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;420.00</td><td>הפקדת מזומן</td></tr><tr><td>10/06/2026</td><td>הפק מזומן-בנקט</td><td>—</td><td class="green">+&#x20AA;400.00</td><td>הפקדת מזומן</td></tr><tr><td>16/06/2026</td><td>bit העברת כסף</td><td>עופר שחר</td><td class="green">+&#x20AA;200.00</td><td>העברה נכנסת</td></tr><tr><td>17/06/2026</td><td>העברה (תאריך ערך: 18/06)</td><td>—</td><td class="green">+&#x20AA;1,100.00</td><td>העברה נכנסת</td></tr></table>
+  <h3 style="margin:20px 0 15px;color:#ef4444">העברות יוצאות</h3>
+  <table><tr><th>תאריך</th><th>פעולה</th><th>יעד</th><th>סכום</th><th>סוג</th></tr><tr><td>25/05/2026</td><td>מימוש עיקול לק</td><td>המרכז לגביית קנסות ואגרו</td><td class="red" style="color:#dc2626;font-weight:700">-&#x20AA;6,940.00</td><td>עיקול</td></tr><tr><td>26/05/2026</td><td>משיכה מבנקט</td><td>—</td><td class="red">-&#x20AA;106.90</td><td>משיכת מזומן</td></tr><tr><td>07/06/2026</td><td>העב' לאחר-נייד</td><td>עליזה רצאבי</td><td class="red">-&#x20AA;3,350.00</td><td>העברה יוצאת</td></tr></table>
+</div>
+<div id="tab-recs" class="tab-content">
+  <div style="margin-bottom:10px;color:#94a3b8;font-size:0.9rem">המלצות על בסיס ניתוח התנועות</div><div style="background:#162032;border-right:4px solid #dc2626;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#dc2626">טיפול דחוף בעיקול</b><span style="background:#dc2626;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">גבוה</span></div><div style="font-size:0.85rem;color:#cbd5e1">פנה מיידית למרכז לגביית קנסות (תיק 00886180373) כדי להסדיר את חוב העיקול ולמנוע עיקולים נוספים.</div></div><div style="background:#162032;border-right:4px solid #dc2626;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#dc2626">הימנע מצ'קים</b><span style="background:#dc2626;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">גבוה</span></div><div style="font-size:0.85rem;color:#cbd5e1">צ'ק 10013 חזר. מומלץ לעבור לתשלום בהעברה בנקאית. אם אתה מוציא צ'קים — ודא יתרה 3 ימים לפני.</div></div><div style="background:#162032;border-right:4px solid #dc2626;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#dc2626">שמור על כרית ביטחון</b><span style="background:#dc2626;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">גבוה</span></div><div style="font-size:0.85rem;color:#cbd5e1">החשבון הגיע ל-122.70- &#x20AA;. שמור לפחות 2,000 &#x20AA; כרזרבה קבועה.</div></div><div style="background:#162032;border-right:4px solid #f59e0b;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#f59e0b">עקוב אחר חיובי אשראי</b><span style="background:#f59e0b;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">בינוני</span></div><div style="font-size:0.85rem;color:#cbd5e1">חיובי דירקט הסתכמו ב-&#x20AA;10,447.42. בקש פירוט מישראכרט לזיהוי הוצאות מיותרות.</div></div><div style="background:#162032;border-right:4px solid #f59e0b;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#f59e0b">תכנן תקציב חודשי</b><span style="background:#f59e0b;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">בינוני</span></div><div style="font-size:0.85rem;color:#cbd5e1">בשני החודשים נרשם גירעון. קבע תקרת הוצאה לפי הכנסה צפויה.</div></div><div style="background:#162032;border-right:4px solid #3b82f6;border-radius:8px;padding:15px;margin-bottom:10px"><div style="display:flex;justify-content:space-between;margin-bottom:6px"><b style="color:#3b82f6">בדוק הוראות קבע</b><span style="background:#3b82f6;color:white;padding:2px 8px;border-radius:20px;font-size:0.75rem">נמוך</span></div><div style="font-size:0.85rem;color:#cbd5e1">הוראות קבע: בזק 95.76 &#x20AA;, הוט מובייל 39.9 &#x20AA;, עיריית אילת 54.3 &#x20AA;.</div></div>
+</div>
+
+</div>
+<script>
+var ALL_TX = [{"date": "19/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 38.5, "credit": 0.0, "balance": 89.52, "val_date": "19/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "21/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 31.0, "credit": 0.0, "balance": 58.52, "val_date": "21/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "25/05/2026", "op": "מימוש עיקול לק", "details": "לטובת: המרכז לגביית קנסות ואגרו עבור: תיק: 00886180373 - הליך: 000000000", "ref": "3553818", "debit": 6940.0, "credit": 0.0, "balance": 4879.52, "val_date": "25/05/2026", "to": "המרכז לגביית קנסות ואגרו", "for": "תיק: 00886180373 - הליך: 000000000", "cat": "עיקול", "month": "2026-05"}, {"date": "25/05/2026", "op": "ביטוח לאומי ג\"", "details": "  עבור: שחר עופר            מזהה 039076914", "ref": "60697083", "debit": 0.0, "credit": 4711.0, "balance": 11819.52, "val_date": "25/05/2026", "to": "", "for": "שחר עופר            מזהה 039076914", "cat": "ביטוח לאומי", "month": "2026-05"}, {"date": "25/05/2026", "op": "bit העברת כסף", "details": "המבצע: עופר שחר עבור: משיכה לחשבון הבנק", "ref": "1078433269381", "debit": 0.0, "credit": 50.0, "balance": 7108.52, "val_date": "25/05/2026", "to": "עופר שחר", "for": "משיכה לחשבון הבנק", "cat": "העברה נכנסת", "month": "2026-05"}, {"date": "25/05/2026", "op": "העברה-נייד", "details": "המבצע: שליט אלדד    12-644-57754", "ref": "460917494", "debit": 0.0, "credit": 7000.0, "balance": 7058.52, "val_date": "25/05/2026", "to": "שליט אלדד", "for": "", "cat": "העברה נכנסת", "month": "2026-05"}, {"date": "26/05/2026", "op": "משיכה מבנקט", "details": "", "ref": "4935", "debit": 106.9, "credit": 0.0, "balance": 4711.82, "val_date": "26/05/2026", "to": "", "for": "", "cat": "משיכת מזומן", "month": "2026-05"}, {"date": "26/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 60.8, "credit": 0.0, "balance": 4818.72, "val_date": "26/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "27/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 810.2, "credit": 0.0, "balance": 3901.62, "val_date": "27/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "28/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 516.29, "credit": 0.0, "balance": 3385.33, "val_date": "28/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "29/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 916.44, "credit": 0.0, "balance": 2468.89, "val_date": "29/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "31/05/2026", "op": "עיריית אילת מס", "details": "", "ref": "233551", "debit": 54.3, "credit": 0.0, "balance": 602.66, "val_date": "31/05/2026", "to": "", "for": "", "cat": "הוראת קבע", "month": "2026-05"}, {"date": "31/05/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 1811.93, "credit": 0.0, "balance": 656.96, "val_date": "31/05/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-05"}, {"date": "01/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 655.63, "credit": 0.0, "balance": -52.97, "val_date": "01/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "02/06/2026", "op": "משרד הבינוי וה", "details": "  עבור: עופר שחר            מזהה 039076914", "ref": "83378281", "debit": 0.0, "credit": 770.0, "balance": 7075.03, "val_date": "02/06/2026", "to": "", "for": "עופר שחר            מזהה 039076914", "cat": "קצבה/מענק ממשלתי", "month": "2026-06"}, {"date": "02/06/2026", "op": "העברה/הפקדה", "details": "המבצע: שליט אלדד עבור: משכורת  12-644-57754", "ref": "462345901", "debit": 0.0, "credit": 6358.0, "balance": 6305.03, "val_date": "02/06/2026", "to": "שליט אלדד", "for": "משכורת", "cat": "משכורת", "month": "2026-06"}, {"date": "03/06/2026", "op": "שיק", "details": "", "ref": "10013", "debit": 3550.0, "credit": 0.0, "balance": 3503.03, "val_date": "03/06/2026", "to": "", "for": "", "cat": "צ'ק", "month": "2026-06"}, {"date": "03/06/2026", "op": "ע. מסלול מורחב", "details": "", "ref": "818", "debit": 22.0, "credit": 0.0, "balance": 7053.03, "val_date": "03/06/2026", "to": "", "for": "", "cat": "עמלת בנק", "month": "2026-06"}, {"date": "04/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 331.7, "credit": 0.0, "balance": 6721.33, "val_date": "04/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "04/06/2026", "op": "החזרת שיק-טכני (תאריך ערך: 03/06)", "details": " סיבת החזרה:  נ.ה.ב - נתקבלה הוראת ביטול", "ref": "10013", "debit": 0.0, "credit": 3550.0, "balance": 7053.03, "val_date": "03/06/2026", "to": "סיבת החזרה:", "for": "נ.ה.ב - נתקבלה הוראת ביטול", "cat": "החזרת צ'ק", "month": "2026-06"}, {"date": "05/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 778.73, "credit": 0.0, "balance": 5942.6, "val_date": "05/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "07/06/2026", "op": "בזק-הוראות קבע", "details": "", "ref": "703991", "debit": 95.76, "credit": 0.0, "balance": 1610.5, "val_date": "07/06/2026", "to": "", "for": "", "cat": "הוראת קבע", "month": "2026-06"}, {"date": "07/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 886.34, "credit": 0.0, "balance": 1706.26, "val_date": "07/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "07/06/2026", "op": "העב' לאחר-נייד", "details": "לטובת: עליזה רצאבי עבור: שכירות לנבלה", "ref": "463229773", "debit": 3350.0, "credit": 0.0, "balance": 2592.6, "val_date": "07/06/2026", "to": "עליזה רצאבי", "for": "שכירות לנבלה", "cat": "העברה יוצאת", "month": "2026-06"}, {"date": "08/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 1306.37, "credit": 0.0, "balance": 1324.13, "val_date": "08/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "08/06/2026", "op": "הפק מזומן-בנקט", "details": "", "ref": "4935", "debit": 0.0, "credit": 1020.0, "balance": 2630.5, "val_date": "08/06/2026", "to": "", "for": "", "cat": "הפקדת מזומן", "month": "2026-06"}, {"date": "09/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 407.11, "credit": 0.0, "balance": 1337.02, "val_date": "09/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "09/06/2026", "op": "הפק מזומן-בנקט", "details": "", "ref": "4935", "debit": 0.0, "credit": 420.0, "balance": 1744.13, "val_date": "09/06/2026", "to": "", "for": "", "cat": "הפקדת מזומן", "month": "2026-06"}, {"date": "10/06/2026", "op": "הוט מובייל בע\"", "details": "  עבור: רחש רפוע    מזהה 039076914", "ref": "36716702", "debit": 39.9, "credit": 0.0, "balance": 322.1, "val_date": "10/06/2026", "to": "", "for": "רחש רפוע    מזהה 039076914", "cat": "הוראת קבע", "month": "2026-06"}, {"date": "10/06/2026", "op": "שיק", "details": "", "ref": "10025", "debit": 1054.0, "credit": 0.0, "balance": 362.0, "val_date": "10/06/2026", "to": "", "for": "", "cat": "צ'ק", "month": "2026-06"}, {"date": "10/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 321.02, "credit": 0.0, "balance": 1416.0, "val_date": "10/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "10/06/2026", "op": "הפק מזומן-בנקט", "details": "", "ref": "4935", "debit": 0.0, "credit": 400.0, "balance": 1737.02, "val_date": "10/06/2026", "to": "", "for": "", "cat": "הפקדת מזומן", "month": "2026-06"}, {"date": "11/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 155.07, "credit": 0.0, "balance": 167.03, "val_date": "11/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "12/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 152.98, "credit": 0.0, "balance": 14.05, "val_date": "12/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "14/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 121.55, "credit": 0.0, "balance": -107.5, "val_date": "14/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "15/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 15.2, "credit": 0.0, "balance": -122.7, "val_date": "15/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "16/06/2026", "op": "bit העברת כסף", "details": "המבצע: עופר שחר עבור: משיכה לחשבון הבנק", "ref": "1078498610935", "debit": 0.0, "credit": 200.0, "balance": 77.3, "val_date": "16/06/2026", "to": "עופר שחר", "for": "משיכה לחשבון הבנק", "cat": "העברה נכנסת", "month": "2026-06"}, {"date": "17/06/2026", "op": "דירקט- מצטבר", "details": "", "ref": "4935", "debit": 76.3, "credit": 0.0, "balance": 1.0, "val_date": "17/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "17/06/2026", "op": "דירקט", "details": "", "ref": "4935", "debit": 550.0, "credit": 0.0, "balance": 46.74, "val_date": "17/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "17/06/2026", "op": "דירקט", "details": "", "ref": "4935", "debit": 204.26, "credit": 0.0, "balance": 596.74, "val_date": "17/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "17/06/2026", "op": "דירקט", "details": "", "ref": "4935", "debit": 300.0, "credit": 0.0, "balance": 801.0, "val_date": "17/06/2026", "to": "", "for": "", "cat": "כרטיס אשראי", "month": "2026-06"}, {"date": "17/06/2026", "op": "העברה (תאריך ערך: 18/06)", "details": "", "ref": "49350", "debit": 0.0, "credit": 1100.0, "balance": 1101.0, "val_date": "18/06/2026", "to": "", "for": "", "cat": "העברה נכנסת", "month": "2026-06"}];
+
+function fmt(n) { return n.toLocaleString('he-IL', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function getCatColor(cat) {
+  var m = {'כרטיס אשראי':'#3b82f6','משכורת':'#10b981','ביטוח לאומי':'#059669',
+    'קצבה/מענק ממשלתי':'#34d399','הוראת קבע':'#f59e0b','העברה נכנסת':'#22c55e',
+    'העברה יוצאות':'#f97316','הפקדת מזומן':'#4ade80','משיכת מזומן':'#fb923c',
+    'צ'ק':'#a78bfa','החזרת צ'ק':'#ef4444','עמלת בנק':'#eab308','עיקול':'#dc2626','אחר':'#94a3b8'};
+  return m[cat] || '#94a3b8';
+}
+function renderTable(tbody, rows) {
+  tbody.innerHTML = rows.map(function(t) {
+    var dest = t.to || t['for'] || '—';
+    var cc = getCatColor(t.cat);
+    var dStr = t.debit > 0 ? '<span class="red">\u20aa' + fmt(t.debit) + '</span>' : '';
+    var cStr = t.credit > 0 ? '<span class="green">\u20aa' + fmt(t.credit) + '</span>' : '';
+    var bCls = t.balance < 0 ? 'red' : '';
+    return '<tr><td>' + t.date + '</td><td>' + t.op + '</td>' +
+      '<td style="font-size:0.8rem;color:#94a3b8">' + dest + '</td>' +
+      '<td><span class="badge" style="background:' + cc + '">' + t.cat + '</span></td>' +
+      '<td>' + dStr + '</td><td>' + cStr + '</td>' +
+      '<td class="' + bCls + '">' + '\u20aa' + fmt(t.balance) + '</td></tr>';
+  }).join('');
+}
+function renderSummary(el, rows) {
+  var td=0, tc=0;
+  rows.forEach(function(t){td+=t.debit;tc+=t.credit;});
+  var net = tc - td;
+  el.innerHTML = '<div class="row"><span>חובה סה"כ</span><span class="red">\u20aa' + fmt(td) + '</span></div>' +
+    '<div class="row"><span>זכות סה"כ</span><span class="green">\u20aa' + fmt(tc) + '</span></div>' +
+    '<div class="row"><span>נטו</span><span class="' + (net>=0?'green':'red') + '">\u20aa' + fmt(net) + '</span></div>';
+}
+
+function togglePanel(id) {
+  var el = document.getElementById(id);
+  el.classList.toggle('active');
+  if(id==='panel-net') renderNetChart();
+}
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(e){e.classList.remove('active');});
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+function filterCat(cat, btn) {
+  document.querySelectorAll('.cat-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  var filtered = cat==='הכל' ? ALL_TX : ALL_TX.filter(function(t){return t.cat===cat;});
+  var tbody = document.getElementById('cat-table-body');
+  var title = document.getElementById('cat-panel-title');
+  var summary = document.getElementById('cat-summary');
+  title.textContent = cat==='הכל' ? 'כל העסקאות (' + filtered.length + ')' : cat + ' — ' + filtered.length + ' עסקאות';
+  renderSummary(summary, filtered);
+  renderTable(tbody, filtered);
+}
+var monthlyChartRendered = false;
+function renderNetChart() {
+  if(monthlyChartRendered) return;
+  monthlyChartRendered = true;
+  var netData = [474.64, -555.92];
+  new Chart(document.getElementById('chart-net').getContext('2d'), {
+    type:'bar',
+    data:{labels:["מאי 2026", "יוני 2026"],datasets:[{
+      label:'יתרה נטו',data:netData,
+      backgroundColor:netData.map(function(v){return v>=0?'rgba(34,197,94,0.8)':'rgba(239,68,68,0.8)';}),borderRadius:6
+    }]},
+    options:{responsive:true,plugins:{legend:{labels:{color:'#e2e8f0'}}},
+      scales:{x:{ticks:{color:'#94a3b8'},grid:{color:'#1e3a5f'}},y:{ticks:{color:'#94a3b8'},grid:{color:'#1e3a5f'}}}}
+  });
+}
+new Chart(document.getElementById('chart-monthly').getContext('2d'), {
+  type:'bar',
+  data:{labels:["מאי 2026", "יוני 2026"],datasets:[
+    {label:'הכנסות',data:[11761.0, 13818.0],backgroundColor:'rgba(34,197,94,0.8)',borderRadius:6},
+    {label:'הוצאות',data:[11286.36, 14373.92],backgroundColor:'rgba(239,68,68,0.8)',borderRadius:6}
+  ]},
+  options:{responsive:true,plugins:{legend:{labels:{color:'#e2e8f0'}}},
+    scales:{x:{ticks:{color:'#94a3b8'},grid:{color:'#1e3a5f'}},y:{ticks:{color:'#94a3b8'},grid:{color:'#1e3a5f'}}}}
+});
+new Chart(document.getElementById('chart-pie').getContext('2d'), {
+  type:'doughnut',
+  data:{labels:["כרטיס אשראי", "עיקול", "צ'ק", "העברה יוצאת", "הוראת קבע", "משיכת מזומן", "עמלת בנק"],datasets:[{data:[10447.42, 6940.0, 4604.0, 3350.0, 189.96, 106.9, 22.0],backgroundColor:["#3b82f6", "#dc2626", "#a78bfa", "#f97316", "#f59e0b", "#fb923c", "#eab308"],borderWidth:0}]},
+  options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#e2e8f0',font:{size:11},padding:8}}}}
+});
+var balData = [{"x": "19/05/2026", "y": 89.52}, {"x": "21/05/2026", "y": 58.52}, {"x": "25/05/2026", "y": 4879.52}, {"x": "25/05/2026", "y": 11819.52}, {"x": "25/05/2026", "y": 7108.52}, {"x": "25/05/2026", "y": 7058.52}, {"x": "26/05/2026", "y": 4711.82}, {"x": "26/05/2026", "y": 4818.72}, {"x": "27/05/2026", "y": 3901.62}, {"x": "28/05/2026", "y": 3385.33}, {"x": "29/05/2026", "y": 2468.89}, {"x": "31/05/2026", "y": 602.66}, {"x": "31/05/2026", "y": 656.96}, {"x": "01/06/2026", "y": -52.97}, {"x": "02/06/2026", "y": 7075.03}, {"x": "02/06/2026", "y": 6305.03}, {"x": "03/06/2026", "y": 3503.03}, {"x": "03/06/2026", "y": 7053.03}, {"x": "04/06/2026", "y": 6721.33}, {"x": "04/06/2026", "y": 7053.03}, {"x": "05/06/2026", "y": 5942.6}, {"x": "07/06/2026", "y": 1610.5}, {"x": "07/06/2026", "y": 1706.26}, {"x": "07/06/2026", "y": 2592.6}, {"x": "08/06/2026", "y": 1324.13}, {"x": "08/06/2026", "y": 2630.5}, {"x": "09/06/2026", "y": 1337.02}, {"x": "09/06/2026", "y": 1744.13}, {"x": "10/06/2026", "y": 322.1}, {"x": "10/06/2026", "y": 362.0}, {"x": "10/06/2026", "y": 1416.0}, {"x": "10/06/2026", "y": 1737.02}, {"x": "11/06/2026", "y": 167.03}, {"x": "12/06/2026", "y": 14.05}, {"x": "14/06/2026", "y": -107.5}, {"x": "15/06/2026", "y": -122.7}, {"x": "16/06/2026", "y": 77.3}, {"x": "17/06/2026", "y": 1.0}, {"x": "17/06/2026", "y": 46.74}, {"x": "17/06/2026", "y": 596.74}, {"x": "17/06/2026", "y": 801.0}, {"x": "17/06/2026", "y": 1101.0}];
+new Chart(document.getElementById('chart-balance').getContext('2d'), {
+  type:'line',
+  data:{labels:balData.map(function(d){return d.x;}),datasets:[{
+    label:'יתרה',data:balData.map(function(d){return d.y;}),
+    borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.1)',
+    fill:true,tension:0.3,pointRadius:3,pointBackgroundColor:'#3b82f6'
+  }]},
+  options:{responsive:true,plugins:{legend:{labels:{color:'#e2e8f0'}}},
+    scales:{x:{ticks:{color:'#94a3b8',maxTicksLimit:10},grid:{color:'#1e3a5f'}},
+            y:{ticks:{color:'#94a3b8'},grid:{color:'#1e3a5f'}}}}
+});
+filterCat('הכל', document.querySelector('.cat-btn'));
+</script>
 </body>
 </html>

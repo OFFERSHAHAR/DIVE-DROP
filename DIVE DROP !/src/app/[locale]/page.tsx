@@ -1,18 +1,14 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
 import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { getLocale } from 'next-intl/server';
+import { getTranslations } from 'next-intl/server';
 import { Button } from '@/components/Button';
 
-export default function HomePage() {
-  const t = useTranslations('home');
-  const params = useParams();
-  const locale = params.locale as string;
+export default async function HomePage() {
+  const locale = await getLocale();
+  const t = await getTranslations('home');
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-cyan-50 px-4">
-      {/* Hero Section */}
       <div className="max-w-2xl text-center space-y-6">
         <h1 className="text-5xl md:text-6xl font-bold text-primary">
           {t('title')}
@@ -21,7 +17,6 @@ export default function HomePage() {
           {t('subtitle')}
         </p>
 
-        {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
           <Link href={`/${locale}/auth/register`}>
             <Button size="lg" variant="primary">
@@ -36,7 +31,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Feature Highlights */}
       <div className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl">
         {[
           { icon: '🌊', label: 'Explore' },

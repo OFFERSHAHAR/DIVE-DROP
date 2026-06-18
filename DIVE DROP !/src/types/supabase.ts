@@ -123,6 +123,66 @@ export interface Database {
         };
         Relationships: [];
       };
+      dive_logs: {
+        Row: {
+          id: string;
+          user_id: string;
+          dive_site_id: string | null;
+          bottom_time_minutes: number;
+          max_depth_m: number | null;
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          dive_site_id?: string | null;
+          bottom_time_minutes: number;
+          max_depth_m?: number | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          dive_site_id?: string | null;
+          bottom_time_minutes?: number;
+          max_depth_m?: number | null;
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      profiles: {
+        Row: {
+          user_id: string;
+          first_name: string;
+          last_name: string;
+          experience_level: 'beginner' | 'intermediate' | 'advanced';
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          first_name?: string;
+          last_name?: string;
+          experience_level?: 'beginner' | 'intermediate' | 'advanced';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          first_name?: string;
+          last_name?: string;
+          experience_level?: 'beginner' | 'intermediate' | 'advanced';
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
