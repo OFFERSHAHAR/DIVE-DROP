@@ -49,6 +49,31 @@
     "edit": "Edit",
     "back": "Back",
     "next": "Next",
-    "submit": "Submit"
+    "submit": "Submit",
+    "start": "Get Started",
+    "tryAgain": "Try Again",
+    "saving": "Saving..."
+  },
+  "perfectDay": {
+    "title": "Plan Your Perfect Dive Day",
+    "subtitle": "Answer 3 quick questions and let AI build your day",
+    "q1": "What's your experience level?",
+    "q2": "What's your goal today?",
+    "q3": "Would you like a dive instructor?",
+    "opt_beginner": "Beginner",
+    "opt_intermediate": "Intermediate",
+    "opt_advanced": "Advanced",
+    "opt_new_site": "Try a New Site",
+    "opt_improve": "Improve My Skills",
+    "opt_social": "Social Dive",
+    "opt_explore": "Just Exploring",
+    "opt_guide_yes": "Yes, Find Me One",
+    "opt_guide_no": "No, I'm Fine",
+    "opt_guide_surprise": "Surprise Me",
+    "loading": "Planning your perfect day...",
+    "save": "Save This Plan",
+    "saved": "Plan Saved!",
+    "recommended_site": "Recommended Site",
+    "your_instructors": "Available Instructors"
   }
 }

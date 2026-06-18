@@ -16,8 +16,8 @@ const buttonVariants = cva(
         success: 'bg-success text-white hover:bg-green-700 focus:ring-success',
       },
       size: {
-        sm: 'h-8 px-3 text-sm',
-        md: 'h-10 px-4 text-base',
+        sm: 'h-11 px-3 text-sm',
+        md: 'h-11 px-4 text-base',
         lg: 'h-12 px-6 text-lg',
       },
       fullWidth: {
@@ -40,6 +40,9 @@ interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   loading?: boolean;
+  fullWidth?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+  variant?: 'primary' | 'secondary' | 'outline' | 'danger' | 'ghost' | 'success';
   children: React.ReactNode;
 }
 
@@ -49,9 +52,12 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       ref={ref}
       className={clsx(buttonVariants({ variant, size, fullWidth, loading }), className)}
       disabled={disabled || loading}
+      aria-busy={loading}
       {...props}
     />
   )
 );
 
 Button.displayName = 'Button';
+
+export default Button;

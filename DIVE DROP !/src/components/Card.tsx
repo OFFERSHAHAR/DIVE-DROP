@@ -7,21 +7,25 @@ interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ variant = 'default', className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={clsx(
-        'rounded-lg transition-all duration-200',
-        {
-          'default': 'bg-white border border-border-secondary shadow-sm',
-          'elevated': 'bg-white shadow-md hover:shadow-lg',
-          'outlined': 'bg-transparent border-2 border-border-primary',
-        }[variant],
-        className
-      )}
-      {...props}
-    />
-  )
+  ({ variant = 'default', className, ...props }, ref) => {
+    const variantClasses = {
+      'default': 'bg-white border border-border-secondary shadow-sm',
+      'elevated': 'bg-white shadow-md hover:shadow-lg',
+      'outlined': 'bg-transparent border-2 border-border-primary',
+    }[variant];
+
+    return (
+      <div
+        ref={ref}
+        className={clsx(
+          'rounded-lg transition-all duration-200',
+          variantClasses,
+          className
+        )}
+        {...props}
+      />
+    );
+  }
 );
 
 Card.displayName = 'Card';
@@ -65,3 +69,5 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardFooterProps>(
 );
 
 CardFooter.displayName = 'CardFooter';
+
+export default Card;

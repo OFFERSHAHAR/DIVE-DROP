@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Button } from '@/components/Button';
@@ -14,6 +14,8 @@ import { ZodError } from 'zod';
 export default function RegisterPage() {
   const t = useTranslations('auth');
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const [errors, setErrors] = useState<Partial<Record<keyof RegisterInput, string>>>({});
   const [globalError, setGlobalError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -56,12 +58,12 @@ export default function RegisterPage() {
         setGlobalError(result.error);
       } else if (result.success) {
         // Redirect to login or verification page
-        router.push('/auth/login?registered=true');
+        router.push(`/${locale}/auth/login?registered=true`);
       }
     } catch (error) {
       if (error instanceof ZodError) {
         const fieldErrors: Partial<Record<keyof RegisterInput, string>> = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err) => {
           if (err.path[0]) {
             fieldErrors[err.path[0] as keyof RegisterInput] = err.message;
           }
@@ -90,7 +92,7 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <Input
               label={t('first_name')}
               name="firstName"
@@ -157,7 +159,7 @@ export default function RegisterPage() {
 
         <div className="text-center text-sm">
           <span className="text-text-secondary">{t('have_account')} </span>
-          <Link href="/auth/login" className="text-primary font-semibold hover:underline">
+          <Link href={`/${locale}/auth/login`} className="text-primary font-semibold hover:underline">
             {t('login_link')}
           </Link>
         </div>

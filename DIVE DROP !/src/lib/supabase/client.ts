@@ -20,26 +20,26 @@ export function createClient() {
             }))
             .filter((c) => c.name && c.value);
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: any) {
           if (typeof document === 'undefined') {
             return;
           }
-          cookiesToSet.forEach(({ name, value, options }) => {
+          cookiesToSet.forEach(({ name, value, options }: any) => {
             const cookieString = `${name}=${encodeURIComponent(value)}`;
             document.cookie = `${cookieString}; path=/; ${
               options?.maxAge ? `max-age=${options.maxAge}; ` : ''
             }${options?.expires ? `expires=${options.expires.toUTCString()}; ` : ''}`;
           });
         },
-        remove(names) {
+        remove(names: any) {
           if (typeof document === 'undefined') {
             return;
           }
-          names.forEach((name) => {
+          names.forEach((name: any) => {
             document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
           });
         },
-      },
+      } as any,
     }
   );
 }

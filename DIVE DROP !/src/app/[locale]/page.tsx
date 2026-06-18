@@ -1,9 +1,14 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 import { Button } from '@/components/Button';
 
 export default function HomePage() {
   const t = useTranslations('home');
+  const params = useParams();
+  const locale = params.locale as string;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-blue-50 to-cyan-50 px-4">
@@ -18,12 +23,12 @@ export default function HomePage() {
 
         {/* Action Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-          <Link href="/auth/register">
+          <Link href={`/${locale}/auth/register`}>
             <Button size="lg" variant="primary">
               {t('register')}
             </Button>
           </Link>
-          <Link href="/auth/login">
+          <Link href={`/${locale}/auth/login`}>
             <Button size="lg" variant="secondary">
               {t('login')}
             </Button>

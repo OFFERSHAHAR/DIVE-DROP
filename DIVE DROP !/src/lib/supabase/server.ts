@@ -13,25 +13,25 @@ export async function createClient() {
         getAll() {
           return cookieStore.getAll();
         },
-        setAll(cookiesToSet) {
+        setAll(cookiesToSet: any) {
           try {
-            cookiesToSet.forEach(({ name, value, options }) => {
+            cookiesToSet.forEach(({ name, value, options }: any) => {
               cookieStore.set(name, value, options);
             });
           } catch {
             // Handle errors during cookie setting
           }
         },
-        remove(names) {
+        remove(names: any) {
           try {
-            names.forEach((name) => {
+            names.forEach((name: any) => {
               cookieStore.delete(name);
             });
           } catch {
             // Handle errors during cookie removal
           }
         },
-      },
+      } as any,
     }
   );
 }

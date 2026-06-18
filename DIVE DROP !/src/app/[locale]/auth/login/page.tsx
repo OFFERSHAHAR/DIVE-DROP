@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/Button';
 import { Card, CardBody, CardHeader } from '@/components/Card';
@@ -14,6 +15,8 @@ import { ZodError } from 'zod';
 export default function LoginPage() {
   const t = useTranslations('auth');
   const router = useRouter();
+  const params = useParams();
+  const locale = params.locale as string;
   const searchParams = useSearchParams();
   const registered = searchParams.get('registered') === 'true';
 
@@ -52,12 +55,12 @@ export default function LoginPage() {
       if (result.error) {
         setGlobalError(result.error);
       } else if (result.success) {
-        router.push('/dashboard');
+        router.push(`/${locale}/dashboard`);
       }
     } catch (error) {
       if (error instanceof ZodError) {
         const fieldErrors: Partial<Record<keyof LoginInput, string>> = {};
-        error.errors.forEach((err) => {
+        error.issues.forEach((err) => {
           if (err.path[0]) {
             fieldErrors[err.path[0] as keyof LoginInput] = err.message;
           }
@@ -123,13 +126,13 @@ export default function LoginPage() {
 
         <div className="space-y-2 text-sm">
           <div className="text-center">
-            <Link href="/auth/forgot-password" className="text-primary hover:underline">
+            <Link href={`/${locale}/auth/forgot-password`} className="text-primary hover:underline">
               {t('forgot_password')}
             </Link>
           </div>
           <div className="text-center">
             <span className="text-text-secondary">{t('no_account')} </span>
-            <Link href="/auth/register" className="text-primary font-semibold hover:underline">
+            <Link href={`/${locale}/auth/register`} className="text-primary font-semibold hover:underline">
               {t('register_link')}
             </Link>
           </div>

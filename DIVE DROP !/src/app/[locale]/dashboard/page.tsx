@@ -1,11 +1,14 @@
 import { useTranslations } from 'next-intl';
 import { redirect } from 'next/navigation';
+import { getLocale } from 'next-intl/server';
 import { getCurrentUser } from '@/lib/auth/actions';
 import { Button } from '@/components/Button';
 import { Card, CardBody, CardHeader } from '@/components/Card';
+import PerfectDayWidget from './components/PerfectDayWidget';
 
 export default async function DashboardPage() {
   const t = useTranslations('navigation');
+  const locale = await getLocale();
   const user = await getCurrentUser();
 
   if (!user) {
@@ -13,7 +16,7 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-cyan-50 p-4 md:p-8">
+    <div className="h-[100dvh] bg-gradient-to-b from-blue-50 to-cyan-50 p-4 md:p-8 overflow-y-auto">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -46,6 +49,9 @@ export default async function DashboardPage() {
             </Card>
           ))}
         </div>
+
+        {/* Perfect Day Widget */}
+        <PerfectDayWidget locale={locale} userExperience={user.user_metadata?.diving_experience as any || 'beginner'} />
 
         {/* Recent Activity */}
         <Card variant="elevated">

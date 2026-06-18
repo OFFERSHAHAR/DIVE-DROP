@@ -87,6 +87,42 @@ export interface Database {
         };
         Relationships: [];
       };
+      dive_plans: {
+        Row: {
+          id: string;
+          user_id: string;
+          dive_site_id: string | null;
+          instructor_id: string | null;
+          experience_level: string;
+          goal: string;
+          ai_message: string | null;
+          tips: string[] | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          dive_site_id?: string | null;
+          instructor_id?: string | null;
+          experience_level: string;
+          goal: string;
+          ai_message?: string | null;
+          tips?: string[] | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          dive_site_id?: string | null;
+          instructor_id?: string | null;
+          experience_level?: string;
+          goal?: string;
+          ai_message?: string | null;
+          tips?: string[] | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       [_ in never]: never;
