@@ -9,13 +9,13 @@ export default {
     extend: {
       // DiveDrop Premium Color Palette
       colors: {
-        // Primary
+        // Primary - Ocean Blue (Diving Theme)
         "ocean-blue": "#0066CC",
         "ocean-blue-dark": "#003D8C",
         "ocean-blue-light": "#1A5FBD",
 
-        // Accent
-        "cyan-accent": "#00B4D8",
+        // Accent - Cyan/Turquoise
+        "cyan-accent": "#00BCD4",
         "aqua": "#48D1E0",
 
         // Backgrounds
@@ -25,10 +25,10 @@ export default {
         "light-bg": "#FFFFFF",
         "light-surface": "#F8FAFC",
 
-        // Status
-        "success": "#00C853",
-        "warning": "#FFC400",
-        "error": "#FF3D00",
+        // Status - Difficulty Levels
+        "success-easy": "#00C853",
+        "warning-intermediate": "#FFC400",
+        "error-hard": "#FF3D00",
         "info": "#00B4D8",
 
         // Neutral
@@ -39,19 +39,13 @@ export default {
         "disabled": "#80878F",
         "border-light": "#D0D5DB",
         "border-dark": "#2A3340",
-      },
 
-      colors: {
         // Primary brand colors - using CSS variables from design-system.css
         primary: "var(--color-primary, #0066CC)",
         "primary-dark": "var(--color-primary-dark, #003D8C)",
         "primary-light": "var(--color-primary-light, #1A5FBD)",
-        accent: "var(--color-accent, #00B4D8)",
+        accent: "var(--color-accent, #00BCD4)",
         "accent-light": "var(--color-accent-light, #48D1E0)",
-        success: "var(--color-success, #00C853)",
-        warning: "var(--color-warning, #FFC400)",
-        error: "var(--color-error, #FF3D00)",
-        info: "var(--color-info, #00B4D8)",
       },
 
       textColor: {

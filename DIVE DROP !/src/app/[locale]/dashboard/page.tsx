@@ -179,59 +179,103 @@ async function DashboardContent({ locale, userId, userName }: { locale: string; 
   ]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-cyan-50 pb-24 md:pb-8">
-      {/* Header Section */}
-      <div className="bg-gradient-to-r from-primary to-primary-dark text-white">
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold">
+    <div className="min-h-screen w-full bg-gradient-to-b from-light-bg via-blue-50 to-light-surface dark:from-dark-bg dark:via-dark-surface dark:to-dark-surface-elevated pb-24 md:pb-8">
+      {/* Hero Header Section */}
+      <div className="bg-gradient-to-r from-primary via-primary-dark to-primary-light text-white relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-72 h-72 bg-accent/20 rounded-full translate-y-1/2 -translate-x-1/2 blur-3xl" />
+
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 relative z-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 mb-8 sm:mb-10">
+            <div className="flex-1">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 leading-tight">
                 {userName ? `Welcome back, ${userName.split(' ')[0]}!` : 'Welcome back!'}
               </h1>
-              <p className="text-blue-100 mt-1">Track your underwater adventures</p>
+              <p className="text-blue-100 text-sm sm:text-base md:text-lg">
+                Track your underwater adventures and explore the world
+              </p>
             </div>
             <LogoutButton />
+          </div>
+
+          {/* Quick Stats Summary - Responsive Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4">
+            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20 hover:bg-white/20 transition-colors">
+              <p className="text-blue-100 text-xs sm:text-sm mb-1 sm:mb-2">Total Dives</p>
+              <p className="text-2xl sm:text-3xl font-bold text-white">{stats.totalDives}</p>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20 hover:bg-white/20 transition-colors">
+              <p className="text-blue-100 text-xs sm:text-sm mb-1 sm:mb-2">Dive Sites</p>
+              <p className="text-2xl sm:text-3xl font-bold text-white">{stats.uniqueSites}</p>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20 hover:bg-white/20 transition-colors">
+              <p className="text-blue-100 text-xs sm:text-sm mb-1 sm:mb-2">Bottom Time</p>
+              <p className="text-2xl sm:text-3xl font-bold text-white">
+                {stats.totalBottomTime}
+                <span className="text-lg">m</span>
+              </p>
+            </div>
+            <div className="bg-white/15 backdrop-blur-sm rounded-lg p-3 sm:p-4 border border-white/20 hover:bg-white/20 transition-colors">
+              <p className="text-blue-100 text-xs sm:text-sm mb-1 sm:mb-2">Avg Depth</p>
+              <p className="text-2xl sm:text-3xl font-bold text-white">
+                {stats.averageDepth}
+                <span className="text-lg">m</span>
+              </p>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        {/* Stats Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8">
-          <StatCard icon="🤿" label="Total Dives" value={stats.totalDives} />
-          <StatCard icon="🌊" label="Dive Sites" value={stats.uniqueSites} />
-          <StatCard icon="⏱️" label="Bottom Time" value={stats.totalBottomTime} unit="min" />
-          <StatCard icon="📊" label="Avg Depth" value={stats.averageDepth} unit="m" />
-        </div>
-
-        <div className="grid md:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        {/* Main Grid Layout - Recent Dives + Recommended Sites */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
           {/* Recent Dives Section */}
-          <div className="md:col-span-2">
-            <Card>
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <h2 className="text-xl font-bold text-text-primary">Recent Dives</h2>
-                  <Link href={`/${locale}/my-dives`}>
+          <div className="lg:col-span-2">
+            <Card variant="elevated" hover={false}>
+              <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6">
+                  <div>
+                    <h2 className="text-xl sm:text-2xl font-bold text-text-primary dark:text-text-light">
+                      Recent Dives
+                    </h2>
+                    <p className="text-xs sm:text-sm text-text-secondary dark:text-text-secondary-light mt-1">
+                      Your latest diving adventures
+                    </p>
+                  </div>
+                  <Link href={`/${locale}/my-dives`} className="flex-shrink-0">
                     <Button variant="ghost" size="sm">
-                      View All
+                      View All →
                     </Button>
                   </Link>
                 </div>
               </CardHeader>
               <CardBody className="p-0">
                 {recentDives.length > 0 ? (
-                  <div className="divide-y divide-border-secondary">
-                    {recentDives.map((dive) => (
-                      <div key={dive.id} className="px-6 py-4 hover:bg-bg-secondary transition-colors">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="font-semibold text-text-primary">{dive.siteName}</p>
-                            <p className="text-sm text-text-secondary">{dive.date}</p>
+                  <div className="divide-y divide-border-primary dark:divide-border-dark">
+                    {recentDives.map((dive, idx) => (
+                      <div
+                        key={dive.id}
+                        className="px-4 sm:px-6 py-4 sm:py-6 hover:bg-bg-secondary dark:hover:bg-dark-surface-elevated transition-colors group"
+                      >
+                        <div className="flex items-center gap-3 sm:gap-4">
+                          <div className="text-2xl sm:text-3xl group-hover:scale-125 transition-transform flex-shrink-0">
+                            {idx === 0 ? '🥇' : idx === 1 ? '🥈' : idx === 2 ? '🥉' : '🤿'}
                           </div>
-                          <div className="text-right">
-                            <p className="text-sm font-medium text-text-primary">
-                              {dive.depth ? `${dive.depth}m` : 'N/A'} • {dive.bottomTime}min
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-text-primary dark:text-text-light text-sm sm:text-base truncate">
+                              {dive.siteName}
+                            </p>
+                            <p className="text-xs sm:text-sm text-text-secondary dark:text-text-secondary-light">
+                              {dive.date}
+                            </p>
+                          </div>
+                          <div className="text-right flex-shrink-0">
+                            <p className="text-xs sm:text-sm font-medium text-text-primary dark:text-text-light whitespace-nowrap">
+                              {dive.depth ? `${dive.depth}m` : 'N/A'}
+                            </p>
+                            <p className="text-xs text-text-secondary dark:text-text-secondary-light">
+                              {dive.bottomTime}m
                             </p>
                           </div>
                         </div>
@@ -239,11 +283,14 @@ async function DashboardContent({ locale, userId, userName }: { locale: string; 
                     ))}
                   </div>
                 ) : (
-                  <div className="px-6 py-12 text-center">
-                    <p className="text-text-secondary mb-4">No dives logged yet</p>
+                  <div className="px-4 sm:px-6 py-12 sm:py-16 text-center">
+                    <div className="text-5xl sm:text-6xl mb-4">🤿</div>
+                    <p className="text-text-secondary dark:text-text-secondary-light mb-6 text-sm sm:text-base font-medium">
+                      No dives logged yet
+                    </p>
                     <Link href={`/${locale}/explore`}>
-                      <Button variant="primary" size="md">
-                        Explore Dive Sites
+                      <Button variant="primary" size="lg">
+                        Explore Dive Sites and Log Your First Dive
                       </Button>
                     </Link>
                   </div>
@@ -253,55 +300,78 @@ async function DashboardContent({ locale, userId, userName }: { locale: string; 
 
             {/* Latest Dive Info */}
             {stats.latestDiveDate && (
-              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                <p className="text-sm text-text-secondary">
-                  Last dive:{' '}
-                  <span className="font-semibold text-primary">
+              <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-primary/10 dark:to-accent/10 rounded-lg border border-blue-200 dark:border-blue-800 flex items-center gap-3 sm:gap-4">
+                <div className="text-3xl sm:text-4xl flex-shrink-0">✨</div>
+                <div>
+                  <p className="text-xs text-text-secondary dark:text-text-secondary-light font-medium uppercase tracking-wide">
+                    Last Dive
+                  </p>
+                  <p className="text-base sm:text-lg font-bold text-primary dark:text-accent">
                     {new Date(stats.latestDiveDate).toLocaleDateString('en-US', {
-                      month: 'long',
+                      month: 'short',
                       day: 'numeric',
                       year: 'numeric',
                     })}
-                  </span>
-                </p>
+                  </p>
+                </div>
               </div>
             )}
           </div>
 
           {/* Recommended Sites Section */}
           <div>
-            <Card>
-              <CardHeader>
-                <h2 className="text-xl font-bold text-text-primary">Recommended Sites</h2>
+            <Card variant="elevated" hover={false}>
+              <CardHeader className="px-4 sm:px-6 py-4 sm:py-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-text-primary dark:text-text-light">
+                  Recommended Sites
+                </h2>
+                <p className="text-xs sm:text-sm text-text-secondary dark:text-text-secondary-light mt-1 sm:mt-2">
+                  Based on your experience
+                </p>
               </CardHeader>
-              <CardBody className="p-0 space-y-1">
-                {recommendedSites.map((site) => (
-                  <div key={site.id} className="border-b border-border-secondary last:border-b-0">
-                    <div className="px-6 py-4 hover:bg-bg-secondary transition-colors">
-                      <div className="flex items-start justify-between mb-2">
-                        <div>
-                          <p className="font-semibold text-text-primary text-sm">{site.name}</p>
-                          <p className="text-xs text-text-secondary">{site.location}</p>
+              <CardBody className="p-0 space-y-0">
+                {recommendedSites.length > 0 ? (
+                  recommendedSites.map((site, idx) => (
+                    <div key={site.id} className="border-b border-border-primary dark:border-border-dark last:border-b-0">
+                      <div className="px-4 sm:px-6 py-4 sm:py-6 hover:bg-bg-secondary dark:hover:bg-dark-surface-elevated transition-colors group cursor-pointer">
+                        <div className="flex items-start gap-2 sm:gap-3 mb-3 sm:mb-4">
+                          <div className="text-lg sm:text-xl flex-shrink-0 mt-0.5">
+                            {idx === 0 ? '⭐' : idx === 1 ? '✨' : '🌟'}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-semibold text-text-primary dark:text-text-light text-sm sm:text-base leading-tight line-clamp-2">
+                              {site.name}
+                            </p>
+                            <p className="text-xs text-text-secondary dark:text-text-secondary-light mt-1 line-clamp-1">
+                              {site.location}
+                            </p>
+                          </div>
                         </div>
+                        <div className="flex items-center gap-2 mb-3 sm:mb-4 flex-wrap">
+                          <span
+                            className={`text-xs font-bold px-2 sm:px-2.5 py-1 rounded-full ${
+                              difficultyBadgeClasses[site.difficulty]
+                            }`}
+                          >
+                            {site.difficulty}
+                          </span>
+                          <span className="text-xs text-text-secondary dark:text-text-secondary-light font-medium">
+                            🌊 {site.depth}m
+                          </span>
+                        </div>
+                        <Link href={`/${locale}/explore`} className="w-full">
+                          <Button variant="outline" size="sm" fullWidth className="text-center text-xs sm:text-sm">
+                            View Site
+                          </Button>
+                        </Link>
                       </div>
-                      <div className="flex items-center gap-2 mb-3">
-                        <span
-                          className={`text-xs font-medium px-2 py-1 rounded ${
-                            difficultyBadgeClasses[site.difficulty]
-                          }`}
-                        >
-                          {site.difficulty}
-                        </span>
-                        <span className="text-xs text-text-secondary">{site.depth}m</span>
-                      </div>
-                      <Link href={`/${locale}/explore`}>
-                        <Button variant="outline" size="sm" fullWidth>
-                          Explore
-                        </Button>
-                      </Link>
                     </div>
+                  ))
+                ) : (
+                  <div className="px-6 py-8 text-center">
+                    <p className="text-text-secondary">No recommendations yet</p>
                   </div>
-                ))}
+                )}
               </CardBody>
             </Card>
           </div>

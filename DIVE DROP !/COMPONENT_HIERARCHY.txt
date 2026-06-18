@@ -1,0 +1,444 @@
+================================================================================
+DIVEDROP COMPONENT HIERARCHY & COMPOSITION STRUCTURE
+================================================================================
+Visual map showing component relationships and nesting structure
+
+================================================================================
+PAGE HIERARCHY
+================================================================================
+
+App Layout
+├── [locale]/layout.tsx
+│   ├── RTLProvider (new)
+│   ├── MobileLayout (new)
+│   │   ├── PageHeader (new)
+│   │   ├── {children}
+│   │   └── BottomNavigation ✓
+│   └── ToastContainer ✓
+
+================================================================================
+HOME PAGE: /[locale]
+================================================================================
+
+<MobileLayout>
+  ├── <HeroSection> (new)
+  │   ├── Background Image
+  │   ├── Gradient Overlay
+  │   ├── Branding Badge (logo + "DiveDrop" text)
+  │   └── Headline + Subtitle
+  │
+  ├── <SearchPanel> (new)
+  │   ├── <SearchField> (new) → Location dropdown
+  │   ├── <SearchField> (new) → Date picker
+  │   ├── <SearchField> (new) → Certification level
+  │   ├── <SearchField> (new) → Dive type
+  │   └── <Button> ✓ → Submit button
+  │
+  ├── <Section>
+  │   ├── <h2>Featured Sites</h2>
+  │   └── <FeaturedSiteCarousel> (new)
+  │       └── <DiveSiteCard> ✓ (repeated)
+  │           ├── Image + Difficulty Badge
+  │           ├── Heart Button (favorite)
+  │           ├── Title + Location
+  │           ├── StarRating component
+  │           ├── Depth Info
+  │           └── Action Buttons
+  │
+  └── <BottomNavigation> ✓
+      └── NavItem[5] with active="home"
+
+================================================================================
+EXPLORE PAGE: /[locale]/explore
+================================================================================
+
+<MobileLayout>
+  ├── <PageHeader> (new)
+  │   ├── Back Button
+  │   ├── Title: "Explore Dive Sites"
+  │   └── Filter Toggle Button (mobile only)
+  │
+  ├── <div className="flex">
+  │   ├── <div className="flex-1">
+  │   │   └── <DiveSiteGrid> ✓
+  │   │       └── <DiveSiteCard> ✓ (repeated × N)
+  │   │           ├── Image + Difficulty Badge
+  │   │           ├── Heart Button (favorite)
+  │   │           ├── Title + Location
+  │   │           ├── StarRating component
+  │   │           ├── Depth Info
+  │   │           └── Action Buttons
+  │   │
+  │   └── {isOpen && <FilterSidebar>} (new)
+  │       ├── Close Button (mobile)
+  │       ├── <FilterGroup> (new)
+  │       │   ├── Title: "Depth Range"
+  │       │   └── <DepthRangeSlider> (new)
+  │       │       ├── Dual-handle track
+  │       │       └── Min/Max labels
+  │       │
+  │       └── <FilterGroup> (new)
+  │           ├── Title: "Difficulty"
+  │           └── <DifficultyFilter> (new)
+  │               ├── Checkbox: Beginner (green)
+  │               ├── Checkbox: Intermediate (orange)
+  │               └── Checkbox: Advanced (red)
+  │
+  └── <BottomNavigation> ✓
+      └── NavItem[5] with active="explore"
+
+================================================================================
+DASHBOARD PAGE: /[locale]/dashboard
+================================================================================
+
+<MobileLayout>
+  ├── <PageHeader> (new)
+  │   └── Title: "Dashboard"
+  │
+  ├── <StatsCard> (new)
+  │   ├── Stat Item
+  │   │   ├── Icon
+  │   │   ├── Label: "Total Dives"
+  │   │   └── Value: "47"
+  │   ├── Stat Item
+  │   │   ├── Icon
+  │   │   ├── Label: "Logged Hours"
+  │   │   └── Value: "126.5h"
+  │   └── Stat Item
+  │       ├── Icon
+  │       ├── Label: "Favorite Sites"
+  │       └── Value: "12"
+  │
+  ├── <section>
+  │   ├── <h2>Recent Dives</h2>
+  │   └── <DiveHistoryCard> (new) (repeated × N)
+  │       ├── [Collapsed view]
+  │       │   ├── Date (left)
+  │       │   ├── Site Name (center)
+  │       │   └── Depth (right) + expand arrow
+  │       └── [Expanded view]
+  │           ├── Image thumbnail
+  │           ├── Duration
+  │           ├── Notes
+  │           └── View Details button
+  │
+  ├── <section>
+  │   ├── <h2>Recommended For You</h2>
+  │   └── <DiveSiteGrid> ✓
+  │       └── <DiveSiteCard> ✓ (repeated × 3-6)
+  │
+  └── <BottomNavigation> ✓
+      └── NavItem[5] with active="dashboard"
+
+================================================================================
+MY DIVES PAGE: /[locale]/my-dives
+================================================================================
+
+<MobileLayout>
+  ├── <PageHeader> (new)
+  │   └── Title: "My Dives"
+  │
+  ├── <div className="space-y-3 pb-20">
+  │   └── <DiveHistoryCard> (new) (repeated × N)
+  │       ├── [Header - always visible]
+  │       │   ├── Date
+  │       │   ├── Site Name
+  │       │   ├── Depth
+  │       │   └── Expand/Collapse Arrow
+  │       └── [Details - expands when clicked]
+  │           ├── Image: <img>
+  │           ├── Duration: "2.5 hours"
+  │           ├── Depth Range: "12m - 28m"
+  │           ├── Notes: <text>
+  │           ├── Equipment Used: <list>
+  │           ├── Wildlife Seen: <tags>
+  │           └── View Full Details button
+  │
+  └── <BottomNavigation> ✓
+      └── NavItem[5] with active="my-dives"
+
+================================================================================
+SETTINGS PAGE: /[locale]/settings
+================================================================================
+
+<MobileLayout>
+  ├── <PageHeader> (new)
+  │   └── Title: "Settings"
+  │
+  ├── <form className="space-y-6 pb-20">
+  │   │
+  │   ├── <FormSection> (new)
+  │   │   └── Title: "Account"
+  │   │       ├── <FormField> (new)
+  │   │       │   ├── Label: "Email"
+  │   │       │   └── <input disabled>
+  │   │       └── <FormField> (new)
+  │   │           ├── Label: "Full Name"
+  │   │           └── <input onChange>
+  │   │
+  │   ├── <FormSection> (new)
+  │   │   └── Title: "Diving Preferences"
+  │   │       ├── <SelectField> (new)
+  │   │       │   ├── Label: "Certification Level"
+  │   │       │   └── <select> with options
+  │   │       └── <SelectField> (new)
+  │   │           ├── Label: "Experience Level"
+  │   │           └── <select> with options
+  │   │
+  │   ├── <FormSection> (new)
+  │   │   └── Title: "Notifications"
+  │   │       ├── <ToggleField> (new)
+  │   │       │   ├── Label: "Email Notifications"
+  │   │       │   └── <toggle checked={true}>
+  │   │       └── <ToggleField> (new)
+  │   │           ├── Label: "Push Notifications"
+  │   │           └── <toggle checked={true}>
+  │   │
+  │   ├── <FormSection> (new)
+  │   │   └── Title: "Accessibility"
+  │   │       ├── <SelectField> (new)
+  │   │       │   ├── Label: "Language"
+  │   │       │   └── <select> [English, עברית]
+  │   │       └── <ToggleField> (new)
+  │   │           ├── Label: "Dark Mode"
+  │   │           └── <toggle checked={isDarkMode}>
+  │   │
+  │   └── <div className="flex gap-2">
+  │       ├── <Button> ✓ variant="primary" → "Save Changes"
+  │       └── <Button> ✓ variant="secondary" → "Logout"
+  │
+  └── <BottomNavigation> ✓
+      └── NavItem[5] with active="settings"
+
+================================================================================
+COMPONENT DEPENDENCY TREE
+================================================================================
+
+Primitives (Already Exist ✓)
+├── Button ✓
+│   └── used in: SearchPanel, FormSection, DiveHistoryCard, settings form
+├── Card ✓
+│   └── used in: StatsCard, DiveHistoryCard
+├── Input ✓
+│   └── used in: FormField, SearchField
+└── BottomNavigation ✓
+    └── used in: all pages
+
+New Composite Components
+├── HeroSection
+│   └── uses: CSS background, gradient overlay
+│
+├── SearchPanel
+│   ├── uses: SearchField × 4, Button
+│   └── used in: home page
+│
+├── SearchField
+│   ├── uses: Input
+│   └── used in: SearchPanel
+│
+├── FeaturedSiteCarousel
+│   ├── uses: DiveSiteCard
+│   └── used in: home page
+│
+├── FilterSidebar
+│   ├── uses: FilterGroup × 2+
+│   └── used in: explore page
+│
+├── FilterGroup
+│   ├── uses: DepthRangeSlider or DifficultyFilter
+│   └── used in: FilterSidebar
+│
+├── DepthRangeSlider
+│   └── used in: FilterGroup
+│
+├── DifficultyFilter
+│   └── used in: FilterGroup
+│
+├── MobileLayout
+│   ├── uses: PageHeader, BottomNavigation
+│   └── wraps: all page content
+│
+├── PageHeader
+│   ├── uses: Button (back, filter toggle)
+│   └── used in: all pages (except home)
+│
+├── DiveHistoryCard
+│   ├── uses: Button, Card
+│   └── used in: dashboard, my-dives pages
+│
+├── StatsCard
+│   ├── uses: Card (optional)
+│   └── used in: dashboard page
+│
+├── FormSection
+│   ├── uses: FormField, SelectField, ToggleField
+│   └── used in: settings page
+│
+├── FormField
+│   ├── uses: Input
+│   └── used in: FormSection
+│
+├── SelectField
+│   └── used in: FormSection
+│
+└── ToggleField
+    └── used in: FormSection
+
+Reused Existing Components
+└── DiveSiteCard ✓
+    └── uses: Button, Card
+        used in: FeaturedSiteCarousel, DiveSiteGrid (explore, dashboard)
+
+================================================================================
+DATA FLOW DIAGRAM
+================================================================================
+
+User Input
+├── SearchPanel → onSearch(formData) → navigate to /explore?q=params
+├── FilterSidebar → onChange(filter) → update URL query params
+├── DiveHistoryCard → onToggleExpand → local state (expandedId)
+├── FormSection → onSubmit(formData) → API call + toast notification
+└── ToggleField → onChange(checked) → update user preferences
+
+Page State
+├── Home page
+│   └── featured sites (static or fetched on load)
+│
+├── Explore page
+│   ├── sites: Site[]
+│   ├── filters: FilterState (controlled)
+│   └── showFilters: boolean (mobile overlay)
+│
+├── Dashboard page
+│   ├── stats: Stat[]
+│   ├── recentDives: Dive[]
+│   └── recommendedSites: Site[]
+│
+├── My Dives page
+│   ├── dives: Dive[]
+│   └── expandedId: string | null
+│
+└── Settings page
+    ├── user: User
+    ├── preferences: Preferences
+    └── locale: 'en' | 'he'
+
+================================================================================
+RESPONSIVE BREAKDOWN
+================================================================================
+
+Mobile (< 640px)
+├── Grid layout: 1 column
+├── Bottom nav: Always visible
+├── Filters: Overlay modal (toggle with button)
+├── Header: Back button + title + filter icon
+└── HeroSection: Full height
+
+Tablet (640-1024px)
+├── Grid layout: 2 columns
+├── Bottom nav: Visible (or sidebar nav on larger tablets)
+├── Filters: Side panel (160px wide) or overlay
+├── Header: Back button + title + filter toggle
+└── HeroSection: Full height or 60vh
+
+Desktop (> 1024px)
+├── Grid layout: 3 columns
+├── Navigation: Top horizontal nav (hide bottom nav)
+├── Filters: Permanent side panel (280px)
+├── Header: Back button + title (sticky)
+└── HeroSection: 60vh or 50vh
+
+================================================================================
+STYLING LAYERS
+================================================================================
+
+1. CSS Variables (design-system.css) ✓
+   └── --color-primary, --space-md, --shadow-2, etc.
+
+2. Tailwind Utilities (applied inline)
+   └── flex, grid, p-4, gap-4, etc.
+
+3. CVA Variants (class-variance-authority)
+   └── Button.primary, Card.elevated, etc.
+
+4. clsx Conditional Classes
+   └── isActive && 'text-primary'
+
+5. Component-Specific CSS (optional)
+   └── Animations, complex selectors
+
+Example Component Stack:
+```
+<div className={clsx(
+  'flex items-center',                    // Tailwind
+  buttonVariants({ variant, size }),     // CVA
+  'focus:ring-2 focus:ring-offset-2',   // Focus states
+  className                              // User override
+)} />
+```
+
+================================================================================
+RTL (RIGHT-TO-LEFT) SUPPORT
+================================================================================
+
+Pages Affected
+├── Settings (language selection)
+├── Profile (if added)
+├── Any text-heavy page in Hebrew (he locale)
+└── FilterSidebar (always RTL-aware)
+
+Implementation
+├── Wrapper: dir="rtl" attribute
+├── CSS: Logical properties (margin-inline, padding-inline)
+├── Layout: flex-row-reverse for nav items
+└── Icons: Mirror horizontally for directional indicators
+
+Example
+```
+<div dir={locale === 'he' ? 'rtl' : 'ltr'}>
+  {/* Content auto-flips based on direction */}
+</div>
+```
+
+================================================================================
+SAFE AREA HANDLING (iOS)
+================================================================================
+
+Affected Elements
+├── HeroSection: padding-top: env(safe-area-inset-top)
+├── BottomNavigation: padding-bottom: env(safe-area-inset-bottom)
+├── FilterSidebar: padding-left: env(safe-area-inset-left)
+└── All: padding-right: env(safe-area-inset-right)
+
+CSS Pattern
+```css
+.element {
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+```
+
+JavaScript (if needed)
+```js
+const insets = {
+  top: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-top')),
+  bottom: parseInt(getComputedStyle(document.documentElement).getPropertyValue('--safe-area-inset-bottom')),
+};
+```
+
+================================================================================
+BUILD ORDER SUMMARY
+================================================================================
+
+10 minutes:  HeroSection, SearchPanel, SearchField, FeaturedSiteCarousel
+10 minutes:  FilterSidebar, FilterGroup, DepthRangeSlider, DifficultyFilter
+5 minutes:   MobileLayout, PageHeader
+5 minutes:   DiveHistoryCard, StatsCard, FormSection, FormField, SelectField, ToggleField
+5 minutes:   Update all pages (5 × 1 min each)
+= 35 minutes total (includes testing)
+
+================================================================================
+END OF HIERARCHY MAP
+================================================================================

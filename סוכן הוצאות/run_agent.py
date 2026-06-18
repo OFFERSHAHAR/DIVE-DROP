@@ -1,89 +1,208 @@
-import anthropic
+import mimetypes
+import os
 import time
+from getpass import getpass
 from pathlib import Path
 
-# ───── הגדרות ─────
-API_KEY        = "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"  # המפתח שלך
-AGENT_ID       = "agent_01WqoQsaMcGZyvas7DSTg1XP"
+import anthropic
+
+
+AGENT_ID = "agent_01WqoQsaMcGZyvas7DSTg1XP"
 ENVIRONMENT_ID = "env_013R16keqBxceHUjm1vaTCEK"
-FOLDER         = Path(r"C:\Users\GamingPC\Desktop\סוכן הוצאות")
-INPUT_FILE     = FOLDER / "excelNewTransactions.xlsx"
-OUTPUT_FOLDER  = FOLDER / "output"
+FOLDER = Path(__file__).resolve().parent
+OUTPUT_FOLDER = FOLDER / "output"
+MAX_WAIT_SECONDS = 30 * 60
 
-OUTPUT_FOLDER.mkdir(exist_ok=True)
+# Financial source formats that the managed agent can reasonably inspect.
+SUPPORTED_EXTENSIONS = {
+    ".csv",
+    ".doc",
+    ".docx",
+    ".html",
+    ".jpeg",
+    ".jpg",
+    ".json",
+    ".md",
+    ".ods",
+    ".pdf",
+    ".png",
+    ".text",
+    ".txt",
+    ".xls",
+    ".xlsb",
+    ".xlsm",
+    ".xlsx",
+    ".xml",
+}
+IGNORED_FILENAMES = {
+    "desktop.ini",
+    "פקודת הרצה.txt",
+}
+MIME_OVERRIDES = {
+    ".csv": "text/csv",
+    ".json": "application/json",
+    ".pdf": "application/pdf",
+    ".xls": "application/vnd.ms-excel",
+    ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+}
 
-client = anthropic.Anthropic(api_key=API_KEY)
 
-# ───── שלב 1: העלאת הקובץ ─────
-print("מעלה קובץ Excel...")
-with open(INPUT_FILE, "rb") as f:
-    uploaded = client.beta.files.upload(
-        file=(INPUT_FILE.name, f, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"),
+def find_input_files() -> list[Path]:
+    """Return all supported source files placed directly in the input folder."""
+    return sorted(
+        (
+            path
+            for path in FOLDER.iterdir()
+            if path.is_file()
+            and not path.name.startswith(".")
+            and path.name not in IGNORED_FILENAMES
+            and path.suffix.lower() in SUPPORTED_EXTENSIONS
+        ),
+        key=lambda path: path.name.lower(),
     )
-print(f"הקובץ הועלה: {uploaded.id}")
 
-# ───── שלב 2: פתיחת סשן ─────
-print("פותח סשן...")
-session = client.beta.sessions.create(
-    agent=AGENT_ID,
-    environment_id=ENVIRONMENT_ID,
-    title="ניתוח חשבון בנק",
-    resources=[{
-        "type": "file",
-        "file_id": uploaded.id,
-        "mount_path": f"/workspace/{INPUT_FILE.name}",
-    }],
-)
-print(f"סשן נפתח: {session.id}")
-print(f"צפה בסשן: https://platform.claude.com/workspaces/default/sessions/{session.id}")
 
-# ───── שלב 3: שליחת הודעת התחלה ─────
-print("שולח הוראה לסוכן...")
-client.beta.sessions.events.send(
-    session_id=session.id,
-    events=[{
-        "type": "user.message",
-        "content": [{"type": "text", "text": "נתח את קובץ ה-Excel שהועלה ל-/workspace וצור את כל קבצי הפלט ב-/mnt/session/outputs/"}],
-    }],
-)
+def mime_type_for(path: Path) -> str:
+    return MIME_OVERRIDES.get(
+        path.suffix.lower(),
+        mimetypes.guess_type(path.name)[0] or "application/octet-stream",
+    )
 
-# ───── שלב 4: המתנה לסיום ─────
-print("הסוכן עובד... ממתין לסיום (זה עלול לקחת כמה דקות)")
-was_running = False
 
-while True:
-    session_status = client.beta.sessions.retrieve(session.id)
+def load_api_key() -> str:
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "").strip()
+    env_file = FOLDER / ".env"
 
-    if session_status.status == "running":
-        was_running = True
-        print(".", end="", flush=True)
+    if not api_key and env_file.exists():
+        for line in env_file.read_text(encoding="utf-8").splitlines():
+            name, separator, value = line.partition("=")
+            if separator and name.strip() == "ANTHROPIC_API_KEY":
+                api_key = value.strip().strip('"').strip("'")
+                break
 
-    elif session_status.status == "idle" and was_running:
-        print("\nהסוכן סיים!")
-        break
+    return api_key or getpass(
+        "הכנס מפתח Anthropic API (ההקלדה מוסתרת): "
+    ).strip()
 
-    elif session_status.status == "terminated":
-        print("\nהסשן הסתיים בשגיאה!")
-        break
 
-    time.sleep(5)
+def wait_for_agent(client: anthropic.Anthropic, session_id: str) -> None:
+    deadline = time.monotonic() + MAX_WAIT_SECONDS
+    was_running = False
+    idle_checks = 0
 
-# ───── שלב 5: הורדת קבצי פלט ─────
-print("מוריד קבצי פלט...")
-time.sleep(3)
-output_files = client.beta.files.list(
-    scope_id=session.id,
-    betas=["managed-agents-2026-04-01"],
-)
+    while time.monotonic() < deadline:
+        session_status = client.beta.sessions.retrieve(session_id)
+        status = session_status.status
 
-if not output_files.data:
-    print("לא נמצאו קבצי פלט — בדוק את הסשן ב-Console")
-else:
-    for f in output_files.data:
-        dest = OUTPUT_FOLDER / f.filename
-        content = client.beta.files.download(f.id)
-        dest.write_bytes(content.read())
-        print(f"✓ נשמר: {dest}")
+        if status == "running":
+            was_running = True
+            idle_checks = 0
+            print(".", end="", flush=True)
+        elif status == "idle":
+            idle_checks += 1
+            # A fast job may finish before the first poll observes "running".
+            if was_running or idle_checks >= 6:
+                print("\nהסוכן סיים!")
+                return
+        elif status == "terminated":
+            raise RuntimeError("הסשן הסתיים בשגיאה. יש לבדוק אותו ב-Claude Console.")
 
-print(f"\nהכל מוכן! הקבצים נמצאים ב: {OUTPUT_FOLDER}")
-input("לחץ Enter לסגירה...")
+        time.sleep(5)
+
+    raise TimeoutError("הסוכן לא סיים בתוך 30 דקות.")
+
+
+def main() -> None:
+    api_key = load_api_key()
+    if not api_key:
+        raise RuntimeError(
+            "לא הוזן מפתח API. אפשר גם להגדיר אותו מראש במשתנה ANTHROPIC_API_KEY."
+        )
+
+    input_files = find_input_files()
+    if not input_files:
+        supported = ", ".join(sorted(SUPPORTED_EXTENSIONS))
+        raise FileNotFoundError(
+            f"לא נמצאו קבצי מידע לניתוח בתיקייה {FOLDER}. סוגים נתמכים: {supported}"
+        )
+
+    OUTPUT_FOLDER.mkdir(exist_ok=True)
+    client = anthropic.Anthropic(api_key=api_key)
+    resources = []
+
+    print(f"נמצאו {len(input_files)} קבצים לניתוח:")
+    for path in input_files:
+        print(f"  - {path.name}")
+        with path.open("rb") as file_handle:
+            uploaded = client.beta.files.upload(
+                file=(path.name, file_handle, mime_type_for(path)),
+            )
+        resources.append(
+            {
+                "type": "file",
+                "file_id": uploaded.id,
+                "mount_path": f"/workspace/{path.name}",
+            }
+        )
+
+    print("פותח סשן...")
+    session = client.beta.sessions.create(
+        agent=AGENT_ID,
+        environment_id=ENVIRONMENT_ID,
+        title=f"ניתוח כלכלי של {len(input_files)} קבצים",
+        resources=resources,
+    )
+    print(f"סשן נפתח: {session.id}")
+    print(
+        "צפה בסשן: "
+        f"https://platform.claude.com/workspaces/default/sessions/{session.id}"
+    )
+
+    file_list = "\n".join(f"- /workspace/{path.name}" for path in input_files)
+    instruction = f"""נתח יחד את כל הקבצים הכלכליים הבאים, ללא יוצא מן הכלל:
+{file_list}
+
+אחד את המידע מכל הקבצים לתמונה כלכלית כוללת, זהה כפילויות בין מקורות,
+ציין סתירות או נתונים חסרים, וצור את כל קבצי הפלט ב-/mnt/session/outputs/.
+אל תסתפק בניתוח של קובץ אחד."""
+
+    print("שולח הוראה לסוכן...")
+    client.beta.sessions.events.send(
+        session_id=session.id,
+        events=[
+            {
+                "type": "user.message",
+                "content": [{"type": "text", "text": instruction}],
+            }
+        ],
+    )
+
+    print("הסוכן עובד... ממתין לסיום (זה עלול לקחת כמה דקות)")
+    wait_for_agent(client, session.id)
+
+    print("מוריד קבצי פלט...")
+    time.sleep(3)
+    output_files = client.beta.files.list(
+        scope_id=session.id,
+        betas=["managed-agents-2026-04-01"],
+    )
+
+    if not output_files.data:
+        print("לא נמצאו קבצי פלט - בדוק את הסשן ב-Console")
+    else:
+        for output_file in output_files.data:
+            destination = OUTPUT_FOLDER / Path(output_file.filename).name
+            content = client.beta.files.download(output_file.id)
+            destination.write_bytes(content.read())
+            print(f"נשמר: {destination}")
+
+    print(f"\nהכל מוכן! הקבצים נמצאים ב: {OUTPUT_FOLDER}")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as error:
+        print(f"\nשגיאה: {error}")
+    finally:
+        input("לחץ Enter לסגירה...")

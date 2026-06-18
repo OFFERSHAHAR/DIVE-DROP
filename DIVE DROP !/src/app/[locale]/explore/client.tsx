@@ -2,9 +2,11 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Link from 'next/link';
 import { Card, CardBody } from '@/components/Card';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
+import { BottomNavigation, BottomNavigationPresets } from '@/components/templates/BottomNavigation';
 import type { Database } from '@/types/supabase';
 
 type DiveSite = Database['public']['Tables']['dive_sites']['Row'];
@@ -32,6 +34,8 @@ export default function ExploreClient({
   // Filter and search state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
+  const [minDepth, setMinDepth] = useState<number | ''>('');
+  const [maxDepth, setMaxDepth] = useState<number | ''>('');
 
   // Filter and search logic
   useEffect(() => {
@@ -40,6 +44,14 @@ export default function ExploreClient({
     // Filter by difficulty
     if (selectedDifficulty !== 'all') {
       filtered = filtered.filter((site) => site.difficulty === selectedDifficulty);
+    }
+
+    // Filter by depth range
+    if (minDepth !== '') {
+      filtered = filtered.filter((site) => site.depth >= minDepth);
+    }
+    if (maxDepth !== '') {
+      filtered = filtered.filter((site) => site.depth <= maxDepth);
     }
 
     // Search by name or location
@@ -53,7 +65,7 @@ export default function ExploreClient({
     }
 
     setFilteredSites(filtered);
-  }, [diveSites, searchQuery, selectedDifficulty]);
+  }, [diveSites, searchQuery, selectedDifficulty, minDepth, maxDepth]);
 
   const handleClearSearch = () => {
     setSearchQuery('');
@@ -62,24 +74,18 @@ export default function ExploreClient({
   const handleClearFilters = () => {
     setSearchQuery('');
     setSelectedDifficulty('all');
+    setMinDepth('');
+    setMaxDepth('');
   };
 
   return (
-    <div className={`min-h-screen bg-bg-primary transition-colors duration-200 ${isRTL ? 'rtl' : 'ltr'}`}>
-      {/* Safe area padding */}
-      <style>{`
-        :root {
-          --safe-area-inset-top: env(safe-area-inset-top);
-          --safe-area-inset-bottom: env(safe-area-inset-bottom);
-        }
-      `}</style>
-
-      {/* Header Section */}
-      <header className="sticky top-0 z-50 bg-gradient-to-b from-bg-primary to-bg-secondary border-b border-border-secondary shadow-1">
-        <div className="container-safe max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className={`min-h-screen bg-gradient-to-b from-blue-50 to-cyan-50 transition-colors duration-200 pb-24 md:pb-8 ${isRTL ? 'rtl' : 'ltr'}`}>
+      {/* Header Section with Search and Filters */}
+      <header className="sticky top-0 z-50 bg-white border-b border-border-secondary shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-4">
           {/* Title */}
-          <div className="mb-6">
-            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-2">
+          <div>
+            <h1 className="text-3xl sm:text-4xl font-bold text-text-primary mb-1">
               {t('navigation.explore')}
             </h1>
             <p className="text-text-secondary text-sm sm:text-base">
@@ -88,60 +94,49 @@ export default function ExploreClient({
           </div>
 
           {/* Search Bar */}
-          <div className="mb-4">
-            <div className="relative">
-              <Input
-                id="search-sites"
-                type="text"
-                placeholder={t('explore.search_placeholder')}
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pr-10"
-                aria-label={t('explore.search_label')}
-              />
-              {searchQuery && (
-                <button
-                  onClick={handleClearSearch}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 text-text-tertiary hover:text-text-primary transition-colors touch-target"
-                  aria-label={t('common.cancel')}
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+          <div className="relative">
+            <Input
+              id="search-sites"
+              type="text"
+              placeholder={t('explore.search_placeholder')}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pr-10"
+              aria-label={t('explore.search_label')}
+            />
+            {searchQuery && (
+              <button
+                onClick={handleClearSearch}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 text-text-tertiary hover:text-text-primary transition-colors"
+                aria-label={t('common.cancel')}
+              >
+                ✕
+              </button>
+            )}
           </div>
 
           {/* Filter Controls */}
-          <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-            <div className="flex-1 sm:flex-none">
-              <label
-                htmlFor="difficulty-filter"
-                className="block text-sm font-medium text-text-primary mb-2 sm:mb-0 sm:mr-3"
-              >
-                {t('explore.filter_difficulty')}:
-              </label>
-            </div>
-
-            <div className="flex flex-wrap gap-2">
+          <div className="flex flex-col sm:flex-row gap-3 flex-wrap items-start sm:items-center">
+            <div className="flex flex-wrap gap-2 flex-1">
               <button
                 onClick={() => setSelectedDifficulty('all')}
-                className={`px-4 py-2.5 rounded-md text-sm font-medium transition-all touch-target ${
+                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                   selectedDifficulty === 'all'
-                    ? 'bg-primary text-white shadow-2'
-                    : 'bg-bg-secondary border border-border-primary text-text-primary hover:border-primary'
+                    ? 'bg-primary text-white shadow-md'
+                    : 'bg-white border border-border-primary text-text-primary hover:border-primary'
                 }`}
               >
-                {t('explore.all')}
+                All
               </button>
 
               {(['easy', 'intermediate', 'hard'] as const).map((difficulty) => (
                 <button
                   key={difficulty}
                   onClick={() => setSelectedDifficulty(difficulty)}
-                  className={`px-4 py-2.5 rounded-md text-sm font-medium transition-all touch-target whitespace-nowrap ${
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all whitespace-nowrap ${
                     selectedDifficulty === difficulty
                       ? getDifficultyBadgeClass(difficulty) + ' ring-2 ring-offset-2'
-                      : 'bg-bg-secondary border border-border-primary text-text-primary hover:border-primary'
+                      : 'bg-white border border-border-primary text-text-primary hover:border-primary'
                   }`}
                 >
                   {getDifficultyIcon(difficulty)} {t(`explore.difficulty_${difficulty}`)}
@@ -150,29 +145,26 @@ export default function ExploreClient({
             </div>
 
             {/* Clear filters button */}
-            {(searchQuery || selectedDifficulty !== 'all') && (
+            {(searchQuery || selectedDifficulty !== 'all' || minDepth !== '' || maxDepth !== '') && (
               <button
                 onClick={handleClearFilters}
-                className="px-4 py-2.5 text-sm font-medium text-accent hover:text-accent-light transition-colors"
+                className="px-3 py-2 text-sm font-medium text-accent hover:text-accent-light transition-colors"
                 aria-label={t('explore.clear_filters')}
               >
-                {t('explore.clear')}
+                Clear
               </button>
             )}
           </div>
 
           {/* Result count */}
-          <div className="mt-4 text-sm text-text-secondary">
-            {t('explore.showing_results', {
-              count: filteredSites.length,
-              total: diveSites.length,
-            })}
+          <div className="text-sm text-text-secondary">
+            Showing {filteredSites.length} of {diveSites.length} dive sites
           </div>
         </div>
       </header>
 
       {/* Main Content */}
-      <main className="container-safe max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-20">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Error State */}
         {error && (
           <div className="bg-error/10 border border-error rounded-lg p-6 mb-6">
@@ -192,13 +184,13 @@ export default function ExploreClient({
               {t('explore.no_sites_found')}
             </h2>
             <p className="text-text-secondary text-center max-w-md mb-6">
-              {searchQuery || selectedDifficulty !== 'all'
-                ? t('explore.no_results_try')
-                : t('explore.no_sites_yet')}
+              {searchQuery || selectedDifficulty !== 'all' || minDepth !== '' || maxDepth !== ''
+                ? 'Try adjusting your filters'
+                : 'No dive sites available yet'}
             </p>
-            {(searchQuery || selectedDifficulty !== 'all') && (
+            {(searchQuery || selectedDifficulty !== 'all' || minDepth !== '' || maxDepth !== '') && (
               <Button onClick={handleClearFilters} variant="primary">
-                {t('explore.reset_filters')}
+                Reset Filters
               </Button>
             )}
           </div>
@@ -206,13 +198,22 @@ export default function ExploreClient({
 
         {/* Grid Layout - Responsive */}
         {!error && filteredSites.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-max">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredSites.map((site) => (
               <DiveSiteCard key={site.id} site={site} locale={locale} isRTL={isRTL} />
             ))}
           </div>
         )}
       </main>
+
+      {/* Bottom Navigation for Mobile */}
+      <BottomNavigation
+        items={BottomNavigationPresets.diveDropMain('explore').map((item) => ({
+          ...item,
+          href: `/${locale}${item.href}`,
+        }))}
+        activeId="explore"
+      />
     </div>
   );
 }
@@ -221,16 +222,15 @@ export default function ExploreClient({
  * Utility functions
  */
 function getDifficultyBadgeClass(difficulty: Difficulty): string {
-  const baseClass =
-    'inline-block px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap touch-target';
+  const baseClass = 'inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap';
 
   switch (difficulty) {
     case 'easy':
-      return `${baseClass} bg-success/20 text-success`;
+      return `${baseClass} bg-green-100 text-green-700`;
     case 'intermediate':
-      return `${baseClass} bg-warning/20 text-warning`;
+      return `${baseClass} bg-yellow-100 text-yellow-700`;
     case 'hard':
-      return `${baseClass} bg-error/20 text-error`;
+      return `${baseClass} bg-red-100 text-red-700`;
     default:
       return baseClass;
   }
@@ -265,11 +265,11 @@ function DiveSiteCard({ site, locale, isRTL }: DiveSiteCardProps) {
   const getDifficultyColor = (difficulty: Difficulty) => {
     switch (difficulty) {
       case 'easy':
-        return 'bg-success/20 text-success';
+        return 'bg-green-100 text-green-700';
       case 'intermediate':
-        return 'bg-warning/20 text-warning';
+        return 'bg-yellow-100 text-yellow-700';
       case 'hard':
-        return 'bg-error/20 text-error';
+        return 'bg-red-100 text-red-700';
       default:
         return 'bg-primary/20 text-primary';
     }
@@ -289,89 +289,103 @@ function DiveSiteCard({ site, locale, isRTL }: DiveSiteCardProps) {
   };
 
   return (
-    <Card
-      variant="elevated"
-      className={`h-full flex flex-col overflow-hidden hover:shadow-3 transition-all duration-200 ${
-        isRTL ? 'rtl' : 'ltr'
-      }`}
-    >
-      {/* Image Section */}
-      {site.image_url && (
-        <div className="w-full h-48 bg-gradient-to-br from-accent/30 to-primary/30 overflow-hidden relative">
-          <img
-            src={site.image_url}
-            alt={site.name}
-            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-            loading="lazy"
-          />
-          <div className="absolute top-3 right-3 sm:right-3 md:left-3 md:right-auto">
+    <Link href={`/${locale}/explore/${site.id}`}>
+      <Card
+        variant="elevated"
+        hover={true}
+        className={`h-full flex flex-col overflow-hidden cursor-pointer group ${
+          isRTL ? 'rtl' : 'ltr'
+        }`}
+      >
+        {/* Image Section - Aspect Ratio */}
+        <div className="w-full aspect-video bg-gradient-to-br from-accent/30 to-primary/30 overflow-hidden relative">
+          {site.image_url ? (
+            <img
+              src={site.image_url}
+              alt={site.name}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              loading="lazy"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-4xl bg-gradient-to-br from-primary/20 to-accent/20">
+              🌊
+            </div>
+          )}
+
+          {/* Difficulty Badge - Positioned Absolutely */}
+          <div className={`absolute top-3 sm:top-4 ${isRTL ? 'right-3 sm:right-4' : 'left-3 sm:left-4'}`}>
             <span
-              className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-bold ${getDifficultyColor(
+              className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-bold ${getDifficultyColor(
                 site.difficulty as Difficulty
-              )} bg-white shadow-1`}
+              )} bg-white/90 backdrop-blur-sm shadow-elevation-2`}
             >
               <span>{getDifficultyIconCard(site.difficulty as Difficulty)}</span>
-              <span>{t(`explore.difficulty_${site.difficulty}`)}</span>
+              <span className="hidden sm:inline">{t(`explore.difficulty_${site.difficulty}`)}</span>
             </span>
           </div>
         </div>
-      )}
 
-      {/* Content Section */}
-      <CardBody className="flex-1 flex flex-col gap-3">
-        {/* Site Name */}
-        <h3 className="text-lg font-bold text-text-primary line-clamp-2 leading-tight">
-          {site.name}
-        </h3>
+        {/* Content Section */}
+        <CardBody className="flex-1 flex flex-col gap-3 sm:gap-4">
+          {/* Site Name */}
+          <h3 className="text-base sm:text-lg font-bold text-text-primary dark:text-text-light line-clamp-2 leading-tight">
+            {site.name}
+          </h3>
 
-        {/* Location with icon */}
-        <div className="flex items-start gap-2">
-          <span className="text-lg mt-0.5 flex-shrink-0">📍</span>
-          <p className="text-sm text-text-secondary break-words">{site.location}</p>
-        </div>
-
-        {/* Depth info */}
-        <div className="flex items-center gap-2 py-2 px-3 bg-bg-tertiary rounded-md">
-          <span className="text-base">🌊</span>
-          <div className="flex-1">
-            <p className="text-xs text-text-tertiary">{t('explore.max_depth')}</p>
-            <p className="text-sm font-semibold text-text-primary">{site.depth}m</p>
+          {/* Location with icon */}
+          <div className="flex items-start gap-2">
+            <span className="text-lg mt-0.5 flex-shrink-0">📍</span>
+            <p className="text-xs sm:text-sm text-text-secondary dark:text-text-secondary-light break-words">
+              {site.location}
+            </p>
           </div>
+
+          {/* Depth info */}
+          <div className="flex items-center gap-2 sm:gap-3 py-2 sm:py-3 px-3 sm:px-4 bg-bg-secondary dark:bg-dark-surface-elevated rounded-md border border-border-primary dark:border-border-dark">
+            <span className="text-base sm:text-lg flex-shrink-0">🌊</span>
+            <div className="flex-1">
+              <p className="text-xs text-text-tertiary dark:text-text-secondary">{t('explore.max_depth')}</p>
+              <p className="text-sm sm:text-base font-semibold text-text-primary dark:text-text-light">
+                {site.depth}m
+              </p>
+            </div>
+          </div>
+
+          {/* Description */}
+          {site.description && (
+            <p className="text-xs sm:text-sm text-text-secondary dark:text-text-secondary-light line-clamp-2 leading-relaxed">
+              {site.description}
+            </p>
+          )}
+        </CardBody>
+
+        {/* Footer / Action */}
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-border-primary dark:border-border-dark bg-bg-secondary dark:bg-dark-surface-elevated flex gap-2">
+          <Button
+            variant="primary"
+            size="sm"
+            fullWidth
+            onClick={(e) => {
+              e.preventDefault();
+              // Site details page will be handled by link
+            }}
+          >
+            View Details
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            fullWidth
+            onClick={(e) => {
+              e.preventDefault();
+              console.log('Add to favorites:', site.id);
+            }}
+            className="px-2"
+          >
+            ❤️
+          </Button>
         </div>
-
-        {/* Description */}
-        {site.description && (
-          <p className="text-sm text-text-secondary line-clamp-3 leading-relaxed">
-            {site.description}
-          </p>
-        )}
-      </CardBody>
-
-      {/* Footer / Action */}
-      <div className="px-6 py-4 border-t border-border-secondary bg-bg-secondary flex gap-2">
-        <Button
-          variant="primary"
-          size="sm"
-          fullWidth
-          onClick={() => {
-            // TODO: Navigate to site details or add to dive plan
-            console.log('View site details:', site.id);
-          }}
-        >
-          {t('explore.view_details')}
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          fullWidth
-          onClick={() => {
-            // TODO: Add to favorites or start dive plan
-            console.log('Add to favorites:', site.id);
-          }}
-        >
-          {t('explore.add_favorite')}
-        </Button>
-      </div>
-    </Card>
+      </Card>
+    </Link>
   );
 }

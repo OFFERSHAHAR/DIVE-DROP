@@ -3,22 +3,22 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import clsx from 'clsx';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 whitespace-nowrap',
+  'inline-flex items-center justify-center rounded-md font-semibold transition-all duration-base disabled:opacity-50 disabled:cursor-not-allowed focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent whitespace-nowrap min-h-touch touch-target',
   {
     variants: {
       variant: {
-        primary: 'bg-primary text-white hover:bg-primary-dark focus:ring-primary',
+        primary: 'bg-primary text-white hover:bg-primary-dark active:scale-95 shadow-elevation-1 hover:shadow-elevation-2 focus-visible:outline-accent',
         secondary:
-          'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary',
-        outline: 'border-2 border-border-primary text-text-primary hover:bg-bg-secondary focus:ring-primary',
-        danger: 'bg-error text-white hover:bg-red-700 focus:ring-error',
-        ghost: 'text-text-primary hover:bg-bg-secondary focus:ring-primary',
-        success: 'bg-success text-white hover:bg-green-700 focus:ring-success',
+          'bg-transparent border-2 border-primary text-primary hover:bg-blue-50 active:scale-95 dark:hover:bg-dark-surface focus-visible:outline-primary',
+        outline: 'border-2 border-border-primary text-text-primary hover:bg-bg-secondary active:scale-95 focus-visible:outline-primary',
+        danger: 'bg-error-hard text-white hover:bg-red-700 active:scale-95 shadow-elevation-1 hover:shadow-elevation-2 focus-visible:outline-error-hard',
+        ghost: 'text-text-primary hover:bg-bg-secondary active:scale-95 focus-visible:outline-primary',
+        success: 'bg-success-easy text-white hover:bg-green-700 active:scale-95 shadow-elevation-1 hover:shadow-elevation-2 focus-visible:outline-success-easy',
       },
       size: {
-        sm: 'h-11 px-3 text-sm',
+        sm: 'h-10 px-3 text-sm',
         md: 'h-11 px-4 text-base',
-        lg: 'h-12 px-6 text-lg',
+        lg: 'h-12 px-6 text-base',
       },
       fullWidth: {
         true: 'w-full',

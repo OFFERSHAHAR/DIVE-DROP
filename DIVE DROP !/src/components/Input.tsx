@@ -33,11 +33,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputAttributes = getInputAttributes();
 
     return (
-      <div className={clsx({ 'w-full': fullWidth })}>
+      <div className={clsx('w-full', { 'w-full': fullWidth })}>
         {label && (
-          <label htmlFor={id} className="block text-sm font-medium text-text-primary mb-2">
+          <label
+            htmlFor={id}
+            className="block text-sm font-medium text-text-primary dark:text-text-light mb-2"
+          >
             {label}
-            {props.required && <span className="text-error ml-1">*</span>}
+            {props.required && <span className="text-error-hard ml-1">*</span>}
           </label>
         )}
         <input
@@ -45,14 +48,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={id}
           type={type}
           className={clsx(
-            'w-full px-4 py-3.5 rounded-md text-base font-body transition-all duration-200',
-            'border-2 bg-white text-text-primary placeholder-text-tertiary',
-            'focus:outline-none focus:ring-2 focus:ring-offset-0',
+            'w-full px-4 py-3 h-11 rounded-md text-sm sm:text-base font-body transition-all duration-base',
+            'border-2 bg-bg-primary dark:bg-dark-surface text-text-primary dark:text-text-light placeholder-text-tertiary dark:placeholder-text-secondary',
+            'focus-visible:outline-none focus-visible:border-primary dark:focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-primary/20',
+            'touch-target min-h-touch',
             {
-              'border-border-primary focus:border-primary focus:ring-primary': !error,
-              'border-error focus:border-error focus:ring-error': error,
+              'border-border-primary dark:border-border-dark focus-visible:border-primary': !error,
+              'border-error-hard dark:border-error-hard focus-visible:border-error-hard focus-visible:ring-error-hard/20':
+                error,
             },
-            'disabled:bg-bg-tertiary disabled:text-text-tertiary disabled:cursor-not-allowed',
+            'disabled:bg-disabled/10 disabled:text-text-tertiary disabled:border-border-primary/50 disabled:cursor-not-allowed',
             className
           )}
           aria-invalid={!!error}
@@ -60,8 +65,16 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...inputAttributes}
           {...props}
         />
-        {error && <p id={errorId} className="text-sm text-error mt-2">{error}</p>}
-        {helperText && !error && <p className="text-sm text-text-tertiary mt-2">{helperText}</p>}
+        {error && (
+          <p id={errorId} className="text-xs sm:text-sm text-error-hard mt-2">
+            {error}
+          </p>
+        )}
+        {helperText && !error && (
+          <p className="text-xs sm:text-sm text-text-tertiary dark:text-text-secondary mt-2">
+            {helperText}
+          </p>
+        )}
       </div>
     );
   }
@@ -80,34 +93,46 @@ export const TextArea = React.forwardRef<HTMLTextAreaElement, TextAreaProps>(
   ({ label, error, helperText, fullWidth, className, id, ...props }, ref) => {
     const errorId = error ? `${id}-error` : undefined;
     return (
-      <div className={clsx({ 'w-full': fullWidth })}>
+      <div className={clsx('w-full', { 'w-full': fullWidth })}>
         {label && (
-          <label htmlFor={id} className="block text-sm font-medium text-text-primary mb-2">
+          <label
+            htmlFor={id}
+            className="block text-sm font-medium text-text-primary dark:text-text-light mb-2"
+          >
             {label}
-            {props.required && <span className="text-error ml-1">*</span>}
+            {props.required && <span className="text-error-hard ml-1">*</span>}
           </label>
         )}
         <textarea
           ref={ref}
           id={id}
           className={clsx(
-            'w-full px-4 py-3.5 rounded-md text-base font-body transition-all duration-200',
-            'border-2 bg-white text-text-primary placeholder-text-tertiary',
-            'focus:outline-none focus:ring-2 focus:ring-offset-0',
-            'resize-none',
+            'w-full px-4 py-3 rounded-md text-sm sm:text-base font-body transition-all duration-base',
+            'border-2 bg-bg-primary dark:bg-dark-surface text-text-primary dark:text-text-light placeholder-text-tertiary dark:placeholder-text-secondary',
+            'focus-visible:outline-none focus-visible:border-primary dark:focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-primary/20',
+            'resize-none min-h-32',
             {
-              'border-border-primary focus:border-primary focus:ring-primary': !error,
-              'border-error focus:border-error focus:ring-error': error,
+              'border-border-primary dark:border-border-dark focus-visible:border-primary': !error,
+              'border-error-hard dark:border-error-hard focus-visible:border-error-hard focus-visible:ring-error-hard/20':
+                error,
             },
-            'disabled:bg-bg-tertiary disabled:text-text-tertiary disabled:cursor-not-allowed',
+            'disabled:bg-disabled/10 disabled:text-text-tertiary disabled:border-border-primary/50 disabled:cursor-not-allowed',
             className
           )}
           aria-invalid={!!error}
           aria-describedby={errorId}
           {...props}
         />
-        {error && <p id={errorId} className="text-sm text-error mt-2">{error}</p>}
-        {helperText && !error && <p className="text-sm text-text-tertiary mt-2">{helperText}</p>}
+        {error && (
+          <p id={errorId} className="text-xs sm:text-sm text-error-hard mt-2">
+            {error}
+          </p>
+        )}
+        {helperText && !error && (
+          <p className="text-xs sm:text-sm text-text-tertiary dark:text-text-secondary mt-2">
+            {helperText}
+          </p>
+        )}
       </div>
     );
   }
