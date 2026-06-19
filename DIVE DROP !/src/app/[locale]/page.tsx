@@ -1,3 +1,5 @@
+'use server';
+
 import Link from 'next/link';
 import { getLocale } from 'next-intl/server';
 import { getTranslations } from 'next-intl/server';
