@@ -287,11 +287,6 @@ export default async function HomePage() {
         </aside>
       </div>
 
-      {/* Bottom Navigation */}
-      <BottomNavigation
-        items={BottomNavigationPresets.diveDropMain('home', locale)}
-        activeId="home"
-      />
     </div>
   );
 }
